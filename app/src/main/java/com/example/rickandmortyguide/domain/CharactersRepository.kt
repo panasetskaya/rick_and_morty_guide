@@ -1,11 +1,14 @@
 package com.example.rickandmortyguide.domain
 
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
+
 interface CharactersRepository {
 
-    fun getCharacterById(id: Int): Character
+    suspend fun getCharacterById(id: Int): Character
 
-    fun getWholeList(): List<Character>
+    fun getWholeList(): Flow<PagingData<Character>>
 
-    fun getCharactersBySearch(query: String?): List<Character>?
+    suspend fun getCharactersBySearch(query: String): List<Character>
 
 }

@@ -12,13 +12,13 @@ interface CharactersDao {
     @Query("SELECT * FROM character WHERE id==:requiredId")
     suspend fun getCharacterById(requiredId: Int): Character
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacter(character: Character)
 
     @Query("SELECT * FROM character")
     suspend fun getWholeList(): List<Character>
 
     @Query("SELECT * FROM character WHERE name LIKE '%' || :search || '%'")
-    suspend fun getCharactersBySearch(search: String): List<Character>?
+    suspend fun getCharactersBySearch(search: String): List<Character>
 
 }
