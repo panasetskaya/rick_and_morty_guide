@@ -1,14 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/material_dynamic_neutral95"
     tools:context=".presentation.DetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageViewCharacterImageDetail"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/character_image_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/textViewDetailNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/name_label"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/guideline50"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewDetailName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/actor"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewDetailNameLabel"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/something" />
+
+            <TextView
+                android:id="@+id/textViewDetailGenderLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/gender_label"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/guideline50"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailName" />
+
+            <TextView
+                android:id="@+id/textViewDetailGender"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/something"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewDetailGenderLabel"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailName" />
+
+            <TextView
+                android:id="@+id/textViewDetailStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/status_label"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/guideline50"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailGender" />
+
+            <TextView
+                android:id="@+id/textViewDetailStatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/something"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewDetailStatusLabel"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailGender" />
+
+            <TextView
+                android:id="@+id/textViewDetailSpeciesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/species_label"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/guideline50"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailStatus" />
+
+            <TextView
+                android:id="@+id/textViewDetailSpecies"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/something"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewDetailSpeciesLabel"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailStatus" />
+
+
+            <TextView
+                android:id="@+id/textViewDetailCreatedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/created_label"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/guideline50"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailSpecies" />
+
+            <TextView
+                android:id="@+id/textViewDetailCreated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/something"
+                android:textColor="@color/material_dynamic_neutral40"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewDetailCreatedLabel"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailSpecies" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,13 +34,15 @@
             android:id="@+id/textViewCharacterName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="16sp"
+            android:fontFamily="@font/actor"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline35"
             app:layout_constraintTop_toTopOf="parent"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            tools:text="@string/something"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

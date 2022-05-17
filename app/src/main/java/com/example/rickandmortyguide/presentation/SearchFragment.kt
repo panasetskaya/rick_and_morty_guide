@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.rickandmortyguide.R
 
-private const val ID_PARAM = "param"
+private const val QUERY_PARAM = "query"
 
-class DetailsFragment : Fragment() {
-    private var idParam: Int? = null
+class SearchFragment : Fragment() {
+
+    private var query: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            idParam = it.getInt(ID_PARAM)
+            query = it.getString(QUERY_PARAM)
         }
     }
 
@@ -23,15 +24,15 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(idParam: Int) =
-            DetailsFragment().apply {
+        fun newInstance(query: String) =
+            SearchFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ID_PARAM, idParam)
+                    putString(QUERY_PARAM, query)
                 }
             }
     }
