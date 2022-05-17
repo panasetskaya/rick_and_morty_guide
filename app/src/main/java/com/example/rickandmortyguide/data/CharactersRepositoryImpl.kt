@@ -18,20 +18,6 @@ class CharactersRepositoryImpl(val context: Context): CharactersRepository {
     val apiService = ApiPagingService.getService()
     val db = CharactersDatabase.getInstance(context)
 
-    init {
-
-        GlobalScope.launch {
-            val load = loadCharacters()
-            load.distinctUntilChanged().collectLatest {
-                Log.i("MyResult", it.toString())
-            }
-
-
-
-
-        }
-    }
-
     override suspend fun getCharacterById(id: Int): Character {
         return db.charactersDao().getCharacterById(id)
     }

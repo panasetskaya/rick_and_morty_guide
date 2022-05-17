@@ -28,9 +28,11 @@ class CharactersPagingSource(val context: Context, val db: CharactersDatabase, p
             var result = listOf<Character>()
             api.getPagingCharactersExample(pageIndex).characters?.let {
                 result = it
-                Log.i("MyRes", "characters loaded")
+                Log.i("MyRes", "characters loaded: $it")
             }
-            GlobalScope.launch { insertCharactersIntoDb(db, result) }
+            GlobalScope.launch {
+                insertCharactersIntoDb(db, result)
+            }
 
             // ЗАМЕНИТЬ GlobalScope?????
 
