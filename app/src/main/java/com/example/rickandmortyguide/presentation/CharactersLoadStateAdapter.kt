@@ -2,7 +2,6 @@ package com.example.rickandmortyguide.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.ui.res.stringResource
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
@@ -21,7 +20,6 @@ fun <T : Any, V : RecyclerView.ViewHolder> PagingDataAdapter<T, V>.withLoadState
         header.loadState = loadStates.refresh
         footer.loadState = loadStates.append
     }
-
     return ConcatAdapter(header, this, footer)
 }
 

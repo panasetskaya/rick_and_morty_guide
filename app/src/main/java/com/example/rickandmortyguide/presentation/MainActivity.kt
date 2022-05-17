@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: CharactersViewModel
     private lateinit var pagingAdapter: CharacterPagingAdapter
     private lateinit var recyclerViewCharacters: RecyclerView
+    private var container: FragmentContainerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,5 +46,13 @@ class MainActivity : AppCompatActivity() {
         pagingAdapter.onCharacterClick = {
             Toast.makeText(this, "There will be some thing here with the character: ${it.name}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.shop_item_container_main, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
