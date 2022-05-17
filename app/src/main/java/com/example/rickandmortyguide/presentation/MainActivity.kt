@@ -54,10 +54,8 @@ class MainActivity : AppCompatActivity() {
             header = CharactersLoadStateAdapter(pagingAdapter),
             footer = CharactersLoadStateAdapter(pagingAdapter))
         pagingAdapter.onCharacterClick = {
-            Log.i("MyResult", "${it.id}")
             it.id?.let { id ->
                 val fragment = DetailsFragment.newInstance(id)
-                Log.i("MyResult", "launching")
                 launchFragment(fragment)
             }
         }
