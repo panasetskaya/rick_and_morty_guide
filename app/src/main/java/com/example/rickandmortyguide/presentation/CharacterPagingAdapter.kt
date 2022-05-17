@@ -20,7 +20,6 @@ class CharacterPagingAdapter: PagingDataAdapter<Character, CharacterPagingAdapte
     class CharacterViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         companion object {
             fun getInstance(parent: ViewGroup): CharacterViewHolder {
-                Log.i("MyRes", "CharacterViewHolder.getInstance сработал")
                 val inflater = LayoutInflater.from(parent.context)
                 val view = inflater.inflate(R.layout.character_item, parent,false)
                 return CharacterViewHolder(view)
@@ -44,14 +43,12 @@ class CharacterPagingAdapter: PagingDataAdapter<Character, CharacterPagingAdapte
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         getItem(position)?.let { char ->
             holder.textViewCharacterName.text = char.name
-            Log.i("MyRes", "character name:"+ char.name)
             Picasso.get().load(char.image).into(holder.imageViewCharacterImage)
             holder.thisItemView.setOnClickListener { onCharacterClick?.invoke(char) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        Log.i("MyRes", "onCreateViewHolder сработал")
         return CharacterViewHolder.getInstance(parent)
     }
 }

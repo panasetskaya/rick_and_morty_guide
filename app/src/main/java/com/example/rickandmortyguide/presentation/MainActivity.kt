@@ -23,21 +23,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recyclerViewCharacters = findViewById(R.id.recyclerCharacters)
-        pagingAdapter = CharacterPagingAdapter()
-        recyclerViewCharacters.adapter = pagingAdapter
         viewModel = ViewModelProvider(
             this,
             CharactersViewModelFactory(application)
         )[CharactersViewModel::class.java]
-
-        pagingAdapter.onCharacterClick = {
-            Toast.makeText(this, "There will be some thing here  with the character: ${it.name}", Toast.LENGTH_SHORT).show()
-        }
-
+        setAdapter()
         lifecycleScope.launch {
             viewModel.getWholeList().distinctUntilChanged().collectLatest {
                 pagingAdapter.submitData(it)
             }
+        }
+    }
+
+    private fun setAdapter() {
+        pagingAdapter = CharacterPagingAdapter()
+        recyclerViewCharacters.adapter = pagingAdapter.withLoadStateAdapters(
+            header = CharactersLoadStateAdapter(pagingAdapter),
+            footer = CharactersLoadStateAdapter(pagingAdapter))
+        pagingAdapter.onCharacterClick = {
+            Toast.makeText(this, "There will be some thing here with the character: ${it.name}", Toast.LENGTH_SHORT).show()
         }
     }
 }
