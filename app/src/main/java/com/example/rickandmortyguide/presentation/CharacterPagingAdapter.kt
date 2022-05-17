@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.rickandmortyguide.R
 import com.example.rickandmortyguide.domain.Character
-import com.squareup.picasso.Picasso
 
 class CharacterPagingAdapter: PagingDataAdapter<Character, CharacterPagingAdapter.CharacterViewHolder>(COMPARATOR) {
 
@@ -43,7 +43,8 @@ class CharacterPagingAdapter: PagingDataAdapter<Character, CharacterPagingAdapte
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         getItem(position)?.let { char ->
             holder.textViewCharacterName.text = char.name
-            Picasso.get().load(char.image).into(holder.imageViewCharacterImage)
+            Glide.with(holder.thisItemView.context).load(char.image).circleCrop()
+                .into(holder.imageViewCharacterImage)
             holder.thisItemView.setOnClickListener { onCharacterClick?.invoke(char) }
         }
     }

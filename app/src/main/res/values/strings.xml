@@ -11,4 +11,8 @@
     <string name="species_label">Species:</string>
     <string name="created_label">Created:</string>
     <string name="something">Something</string>
+    <string name="page_title">Character List</string>
+    <string name="content_description_search">search for a character</string>
+    <string name="search">Search</string>
+    <string name="go_back_to_the_character_list">Go back to the character list</string>
 </resources>

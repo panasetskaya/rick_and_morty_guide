@@ -4,8 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_neutral95"
+    android:background="@color/light_silver"
     tools:context=".presentation.DetailsFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBarDetail"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/top_app_bar_detail" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -13,7 +30,7 @@
         android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutDetail"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true">
@@ -48,10 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/actor"
+                android:fontFamily="@font/basic"
                 android:text="@string/name_label"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/guideline50"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,9 +77,6 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/actor"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewDetailNameLabel"
                 app:layout_constraintTop_toTopOf="parent"
@@ -76,10 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/gender_label"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/guideline50"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailName" />
 
@@ -90,10 +99,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/something"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewDetailGenderLabel"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailName" />
@@ -104,10 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/status_label"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/guideline50"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailGender" />
 
@@ -118,10 +121,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/something"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewDetailStatusLabel"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailGender" />
@@ -132,10 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/species_label"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/guideline50"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailStatus" />
 
@@ -146,10 +143,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/something"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewDetailSpeciesLabel"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailStatus" />
@@ -161,10 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/created_label"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/guideline50"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailSpecies" />
 
@@ -176,10 +167,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/actor"
                 android:text="@string/something"
-                android:textColor="@color/material_dynamic_neutral40"
-                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewDetailCreatedLabel"

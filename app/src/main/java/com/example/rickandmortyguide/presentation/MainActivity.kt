@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyguide.R
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -20,11 +22,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: CharactersViewModel
     private lateinit var pagingAdapter: CharacterPagingAdapter
     private lateinit var recyclerViewCharacters: RecyclerView
-    private var container: FragmentContainerView? = null
+    private lateinit var topAppBar: MaterialToolbar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        topAppBar = findViewById(R.id.topAppBar)
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            // Handle search icon press
+            Toast.makeText(this, "There will be search here", Toast.LENGTH_SHORT).show()
+            true
+        }
+
         recyclerViewCharacters = findViewById(R.id.recyclerCharacters)
         viewModel = ViewModelProvider(
             this,
@@ -44,14 +54,19 @@ class MainActivity : AppCompatActivity() {
             header = CharactersLoadStateAdapter(pagingAdapter),
             footer = CharactersLoadStateAdapter(pagingAdapter))
         pagingAdapter.onCharacterClick = {
-            Toast.makeText(this, "There will be some thing here with the character: ${it.name}", Toast.LENGTH_SHORT).show()
+            Log.i("MyResult", "${it.id}")
+            it.id?.let { id ->
+                val fragment = DetailsFragment.newInstance(id)
+                Log.i("MyResult", "launching")
+                launchFragment(fragment)
+            }
         }
     }
 
     private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.shop_item_container_main, fragment)
+            .replace(R.id.character_container_main, fragment)
             .addToBackStack(null)
             .commit()
     }

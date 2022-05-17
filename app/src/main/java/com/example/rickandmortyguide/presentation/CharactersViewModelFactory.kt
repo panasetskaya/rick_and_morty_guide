@@ -5,9 +5,10 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class CharactersViewModelFactory(thisContext: Context): ViewModelProvider.Factory {
+class CharactersViewModelFactory(application: Application):
+    ViewModelProvider.AndroidViewModelFactory(application) {
 
-    val context = thisContext
+    val context = application
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CharactersViewModel(context as Application) as T
