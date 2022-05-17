@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Rick and Morty Guide</string>
+    <string name="character_image_description">Character\'s image</string>
 </resources>

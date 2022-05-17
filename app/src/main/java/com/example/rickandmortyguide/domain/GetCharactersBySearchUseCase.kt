@@ -2,7 +2,7 @@ package com.example.rickandmortyguide.domain
 
 class GetCharactersBySearchUseCase(private val repository: CharactersRepository) {
 
-    fun getCharactersBySearch(query: String?): List<Character>? {
+    suspend fun getCharactersBySearch(query: String): List<Character> {
         return repository.getCharactersBySearch(query)
     }
 
