@@ -46,6 +46,5 @@ class CharactersViewModel(application: Application): AndroidViewModel(applicatio
 
     fun getWholeList(): Flow<PagingData<Character>> {
         return getWholeListUseCase.getWholeList().cachedIn(viewModelScope)
+        }
     }
-
-}

@@ -33,6 +33,7 @@ class CharactersRepositoryImpl(val context: Context): CharactersRepository {
     private fun loadCharacters() = Pager(
         pagingSourceFactory = { CharactersPagingSource(context, db, apiService) },
         config = PagingConfig(
+            enablePlaceholders = true,
             pageSize = 20
         )
     ).flow

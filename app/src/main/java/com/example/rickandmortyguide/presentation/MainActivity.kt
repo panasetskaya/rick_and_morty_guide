@@ -2,6 +2,7 @@ package com.example.rickandmortyguide.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.widget.Toast
 import android.widget.Toolbar
@@ -9,15 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyguide.R
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+
 
     private lateinit var viewModel: CharactersViewModel
     private lateinit var pagingAdapter: CharacterPagingAdapter
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         setAdapter()
         lifecycleScope.launch {
             viewModel.getWholeList().distinctUntilChanged().collectLatest {
-                pagingAdapter.submitData(it)
+                pagingAdapter.submitData(lifecycle, it)
             }
         }
     }
@@ -53,6 +55,10 @@ class MainActivity : AppCompatActivity() {
         recyclerViewCharacters.adapter = pagingAdapter.withLoadStateAdapters(
             header = CharactersLoadStateAdapter(pagingAdapter),
             footer = CharactersLoadStateAdapter(pagingAdapter))
+
+        // Не работает Restoration Policy!
+        pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
         pagingAdapter.onCharacterClick = {
             it.id?.let { id ->
                 val fragment = DetailsFragment.newInstance(id)
