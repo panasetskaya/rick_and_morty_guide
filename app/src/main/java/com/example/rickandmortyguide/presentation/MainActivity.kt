@@ -17,61 +17,17 @@ import com.example.rickandmortyguide.R
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlin.concurrent.fixedRateTimer
 
 class MainActivity : AppCompatActivity() {
-
-
-    private lateinit var viewModel: CharactersViewModel
-    private lateinit var pagingAdapter: CharacterPagingAdapter
-    private lateinit var recyclerViewCharacters: RecyclerView
-    private lateinit var topAppBar: MaterialToolbar
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        topAppBar = findViewById(R.id.topAppBar)
-        topAppBar.setOnMenuItemClickListener { menuItem ->
-            // Handle search icon press
-            Toast.makeText(this, "There will be search here", Toast.LENGTH_SHORT).show()
-            true
-        }
-
-        recyclerViewCharacters = findViewById(R.id.recyclerCharacters)
-        viewModel = ViewModelProvider(
-            this,
-            CharactersViewModelFactory(application)
-        )[CharactersViewModel::class.java]
-        setAdapter()
-        lifecycleScope.launch {
-            viewModel.getWholeList().distinctUntilChanged().collectLatest {
-                pagingAdapter.submitData(lifecycle, it)
-            }
-        }
     }
 
-    private fun setAdapter() {
-        pagingAdapter = CharacterPagingAdapter()
-        recyclerViewCharacters.adapter = pagingAdapter.withLoadStateAdapters(
-            header = CharactersLoadStateAdapter(pagingAdapter),
-            footer = CharactersLoadStateAdapter(pagingAdapter))
-
-        // Не работает Restoration Policy!
-        pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-
-        pagingAdapter.onCharacterClick = {
-            it.id?.let { id ->
-                val fragment = DetailsFragment.newInstance(id)
-                launchFragment(fragment)
-            }
-        }
-    }
-
-    private fun launchFragment(fragment: Fragment) {
+    override fun onBackPressed() {
+        super.onBackPressed()
         supportFragmentManager.popBackStack()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.character_container_main, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 }

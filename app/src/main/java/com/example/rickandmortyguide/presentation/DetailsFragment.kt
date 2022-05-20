@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.rickandmortyguide.R
 import com.google.android.material.appbar.MaterialToolbar
-
-private const val ID_PARAM = "param"
 
 class DetailsFragment : Fragment() {
     private var idParam: Int? = null
@@ -25,13 +24,8 @@ class DetailsFragment : Fragment() {
     private lateinit var ivImage: ImageView
     private lateinit var viewModel: CharactersViewModel
     private lateinit var topAppBarDetail: MaterialToolbar
+    val args: DetailsFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            idParam = it.getInt(ID_PARAM)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +40,7 @@ class DetailsFragment : Fragment() {
             this,
             CharactersViewModelFactory(requireActivity().application)
         )[CharactersViewModel::class.java]
+        idParam = args.idParam
         findViews(view)
         setValues(view)
     }
@@ -78,11 +73,6 @@ class DetailsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(idParam: Int) =
-            DetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ID_PARAM, idParam)
-                }
-            }
+        fun newInstance() = DetailsFragment()
     }
 }

@@ -12,7 +12,7 @@ interface CharactersDao {
     @Query("SELECT * FROM character WHERE id==:requiredId")
     suspend fun getCharacterById(requiredId: Int): Character
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCharacter(character: Character)
 
     @Query("SELECT * FROM character")

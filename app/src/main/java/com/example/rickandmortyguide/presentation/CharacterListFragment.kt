@@ -5,18 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyguide.R
+import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
-private const val ARG_PARAM1 = "param1"
 
 class CharacterListFragment : Fragment() {
-    private var param1: String? = null
+
+    private lateinit var viewModel: CharactersViewModel
+    private lateinit var pagingAdapter: CharacterPagingAdapter
+    private lateinit var recyclerViewCharacters: RecyclerView
+    private lateinit var topAppBar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-        }
     }
 
     override fun onCreateView(
@@ -27,22 +36,49 @@ class CharacterListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_character_list, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CharacterListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String) =
-            CharacterListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        topAppBar = view.findViewById(R.id.topAppBarMain)
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            // Handle search icon press
+            Toast.makeText(activity, "There will be search here", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        recyclerViewCharacters = view.findViewById(R.id.recyclerCharacters)
+        viewModel = ViewModelProvider(
+            this,
+            CharactersViewModelFactory(requireActivity().application)
+        )[CharactersViewModel::class.java]
+        setAdapter()
+        lifecycleScope.launch {
+            viewModel.getWholeList().distinctUntilChanged().collectLatest {
+                pagingAdapter.submitData(lifecycle, it)
             }
+        }
+    }
+
+    private fun setAdapter() {
+        pagingAdapter = CharacterPagingAdapter()
+        recyclerViewCharacters.adapter = pagingAdapter.withLoadStateAdapters(
+            header = CharactersLoadStateAdapter(pagingAdapter),
+            footer = CharactersLoadStateAdapter(pagingAdapter))
+
+        // Не работает Restoration Policy!
+        pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
+        pagingAdapter.onCharacterClick = {
+            it.id?.let { id ->
+                val action = CharacterListFragmentDirections.actionCharacterListFragmentToDetailsFragment(id)
+                recyclerViewCharacters.findNavController().navigate(action)
+            // TODO("ПРОБЛЕМЫ: CharacterListFragment похоже не сохраняется в бэкстеке?? загружается заново и теряет позицию")
+            }
+        }
+    }
+
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = CharacterListFragment()
     }
 }
