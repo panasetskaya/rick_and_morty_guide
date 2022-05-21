@@ -2,6 +2,7 @@ package com.example.rickandmortyguide.data
 
 import android.content.Context
 import android.util.Log
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -23,17 +24,38 @@ class CharactersRepositoryImpl(val context: Context): CharactersRepository {
     }
 
     override fun getWholeList(): Flow<PagingData<Character>> {
-        return loadCharacters()
+        return loadAllCharacters().flow
     }
 
-    override suspend fun getCharactersBySearch(query: String): List<Character> {
-        return  db.charactersDao().getCharactersBySearch(query)
+    override fun getCharactersBySearch(query: String): Flow<PagingData<Character>> {
+        return  loadCharactersByQuery(query).flow
     }
 
-    private fun loadCharacters() = Pager(
-        pagingSourceFactory = { CharactersPagingSource(context, db, apiService) },
-        config = PagingConfig(
-            pageSize = 20
-        )
-    ).flow
+    @OptIn(ExperimentalPagingApi::class)
+    private fun loadAllCharacters(): Pager<Int, Character> {
+        val pager = Pager(
+            config = PagingConfig(
+                enablePlaceholders = true,
+                pageSize = 20
+            ),
+            remoteMediator = CharacterRemoteMediator(db,apiService)
+        ) {
+            db.charactersDao().getWholeList()
+        }
+        return pager
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    private fun loadCharactersByQuery(query: String): Pager<Int, Character> {
+        val pager = Pager(
+            config = PagingConfig(
+                enablePlaceholders = true,
+                pageSize = 20
+            ),
+            remoteMediator = CharacterRemoteMediator(db,apiService)
+        ) {
+            db.charactersDao().getCharactersBySearch(query)
+        }
+        return pager
+    }
 }

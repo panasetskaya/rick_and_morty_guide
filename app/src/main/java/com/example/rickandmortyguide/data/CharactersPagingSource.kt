@@ -2,6 +2,7 @@ package com.example.rickandmortyguide.data
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickandmortyguide.domain.Character
@@ -26,9 +27,8 @@ class CharactersPagingSource(val context: Context, val db: CharactersDatabase, p
 
         return try {
             var result = listOf<Character>()
-            api.getPagingCharactersExample(pageIndex).characters?.let {
+            api.getPagingCharactersExample(pageIndex).characters.let {
                 result = it
-                Log.i("MyRes", "characters loaded: $it")
             }
             GlobalScope.launch {
                 insertCharactersIntoDb(db, result)

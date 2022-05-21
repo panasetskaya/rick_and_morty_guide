@@ -9,6 +9,6 @@ interface CharactersRepository {
 
     fun getWholeList(): Flow<PagingData<Character>>
 
-    suspend fun getCharactersBySearch(query: String): List<Character>
+    fun getCharactersBySearch(query: String): Flow<PagingData<Character>>
 
 }

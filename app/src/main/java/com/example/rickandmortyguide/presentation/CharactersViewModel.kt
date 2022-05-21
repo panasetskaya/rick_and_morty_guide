@@ -13,6 +13,7 @@ import com.example.rickandmortyguide.domain.GetCharacterByIdUseCase
 import com.example.rickandmortyguide.domain.GetCharactersBySearchUseCase
 import com.example.rickandmortyguide.domain.GetWholeListUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class CharactersViewModel(application: Application): AndroidViewModel(application) {
@@ -26,26 +27,17 @@ class CharactersViewModel(application: Application): AndroidViewModel(applicatio
     private val _characterLiveData = MutableLiveData<Character>()
     val characterLiveData: LiveData<Character> = _characterLiveData
 
-    private val _characterListLiveData = MutableLiveData<List<Character>>()
-    val characterListLiveData: LiveData<List<Character>?> = _characterListLiveData
-
-
     fun getCharacterById(id: Int) {
         viewModelScope.launch {
             _characterLiveData.postValue(getCharacterByIdUseCase.getCharacterById(id))
         }
     }
 
-    fun getCharacterBySearch(query: String?) {
-        query?.let {
-            viewModelScope.launch {
-                _characterListLiveData.postValue(getCharacterBySearchUseCase.getCharactersBySearch(it))
-            }
-        }
+    fun getCharacterBySearch(query: String): Flow<PagingData<Character>> {
+        return getCharacterBySearchUseCase.getCharactersBySearch(query).cachedIn(viewModelScope)
     }
 
     fun getWholeList(): Flow<PagingData<Character>> {
         return getWholeListUseCase.getWholeList().cachedIn(viewModelScope)
+        }
     }
-
-}

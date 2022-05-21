@@ -1,9 +1,7 @@
 package com.example.rickandmortyguide.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.paging.PagingSource
+import androidx.room.*
 import com.example.rickandmortyguide.domain.Character
 
 @Dao
@@ -15,10 +13,13 @@ interface CharactersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacter(character: Character)
 
+    @Query("DELETE FROM character")
+    suspend fun deleteAll()
+
     @Query("SELECT * FROM character")
-    suspend fun getWholeList(): List<Character>
+    fun getWholeList(): PagingSource<Int, Character>
 
     @Query("SELECT * FROM character WHERE name LIKE '%' || :search || '%'")
-    suspend fun getCharactersBySearch(search: String): List<Character>
+    fun getCharactersBySearch(search: String): PagingSource<Int, Character>
 
 }
