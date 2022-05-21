@@ -38,7 +38,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(
-            this,
+            requireActivity(),
             CharactersViewModelFactory(requireActivity().application)
         )[CharactersViewModel::class.java]
         idParam = args.idParam
@@ -60,13 +60,7 @@ class DetailsFragment : Fragment() {
         topAppBarDetail.setNavigationOnClickListener {
             requireActivity().onBackPressed()
             true
-            }
-
-//        topAppBarDetail.setOnMenuItemClickListener { menuItem ->
-//            // Handle search icon press
-//            requireActivity().onBackPressed()
-//            true
-//        }
+        }
     }
 
     private fun setValues(view: View) {
@@ -84,10 +78,5 @@ class DetailsFragment : Fragment() {
                 topAppBarDetail.title = it.name
             }
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = DetailsFragment()
     }
 }
