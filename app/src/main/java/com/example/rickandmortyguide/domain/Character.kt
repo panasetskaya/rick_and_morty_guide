@@ -22,5 +22,5 @@ data class Character(
     @Json(name = "image")
     val image: String? = null
 ) {
-    var cutCreated: String? = created?.substring(0,10)
+    var cutCreated: String? = created?.substring(0, 10)
 }

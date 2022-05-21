@@ -17,8 +17,6 @@ class CharacterRemoteMediator(
     private val networkService: ApiPagingService
 ) : RemoteMediator<Int, Character>() {
 
-    val charactersDao = database.charactersDao()
-
     override suspend fun initialize(): InitializeAction {
         // Launch remote refresh as soon as paging starts and do not trigger remote prepend or
         // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
@@ -132,7 +130,7 @@ class CharacterRemoteMediator(
         // The paging library is trying to load data after the anchor position
         // Get the item closest to the anchor position
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let {  characterId ->
+            state.closestItemToPosition(position)?.id?.let { characterId ->
                 database.remoteKeysDao().remoteKeysRepoId(characterId)
             }
         }

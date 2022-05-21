@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.rickandmortyguide.domain.Character
 
 @Database(entities = [Character::class, RemoteKeys::class], version = 4, exportSchema = false)
-abstract class CharactersDatabase: RoomDatabase() {
+abstract class CharactersDatabase : RoomDatabase() {
 
     abstract fun charactersDao(): CharactersDao
     abstract fun remoteKeysDao(): RemoteKeysDao
@@ -20,10 +20,11 @@ abstract class CharactersDatabase: RoomDatabase() {
 
         fun getInstance(context: Context): CharactersDatabase {
             synchronized(LOCK) {
-                if (database==null) {
-                    val instance = Room.databaseBuilder(context, CharactersDatabase::class.java, DB_NAME)
-                        .fallbackToDestructiveMigration()
-                        .build()
+                if (database == null) {
+                    val instance =
+                        Room.databaseBuilder(context, CharactersDatabase::class.java, DB_NAME)
+                            .fallbackToDestructiveMigration()
+                            .build()
                     database = instance
                     return instance
                 } else {
