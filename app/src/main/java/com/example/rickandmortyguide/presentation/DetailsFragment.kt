@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -55,7 +56,21 @@ class DetailsFragment : Fragment() {
         topAppBarDetail = view.findViewById(R.id.topAppBarDetail)
     }
 
+    private fun setAppBar() {
+        topAppBarDetail.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+            true
+            }
+
+//        topAppBarDetail.setOnMenuItemClickListener { menuItem ->
+//            // Handle search icon press
+//            requireActivity().onBackPressed()
+//            true
+//        }
+    }
+
     private fun setValues(view: View) {
+        setAppBar()
         idParam?.let {
             viewModel.getCharacterById(it)
             viewModel.characterLiveData.observe(viewLifecycleOwner){

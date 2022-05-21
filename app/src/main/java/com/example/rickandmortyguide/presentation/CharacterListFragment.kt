@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyguide.R
 import com.google.android.material.appbar.MaterialToolbar
@@ -47,7 +49,7 @@ class CharacterListFragment : Fragment() {
 
         recyclerViewCharacters = view.findViewById(R.id.recyclerCharacters)
         viewModel = ViewModelProvider(
-            this,
+            requireActivity(),
             CharactersViewModelFactory(requireActivity().application)
         )[CharactersViewModel::class.java]
         setAdapter()
@@ -71,11 +73,12 @@ class CharacterListFragment : Fragment() {
             it.id?.let { id ->
                 val action = CharacterListFragmentDirections.actionCharacterListFragmentToDetailsFragment(id)
                 recyclerViewCharacters.findNavController().navigate(action)
-            // TODO("ПРОБЛЕМЫ: CharacterListFragment похоже не сохраняется в бэкстеке?? загружается заново и теряет позицию")
+            // TODO("ПРОБЛЕМЫ: CharacterListFragment при возврате на него загружается заново (без кэша в датабазе!)
+            //  и теряет позицию, несмотря на StateRestorationPolicy.
+            //  Посмотреть в логах бэкстек и жц этого фрагмента")
             }
         }
     }
-
 
     companion object {
         @JvmStatic
