@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.rickandmortyguide.R
@@ -66,15 +65,17 @@ class DetailsFragment : Fragment() {
         setAppBar()
         idParam?.let {
             viewModel.getCharacterById(it)
-            viewModel.characterLiveData.observe(viewLifecycleOwner){
-                tvName.text = it.name
-                tvSpecies.text = it.species
-                tvCreated.text = it.cutCreated
-                tvGender.text = it.gender
-                tvStatus.text = it.status
-                Glide.with(view.context).load(it.image)
-                    .into(ivImage)
-                topAppBarDetail.title = it.name
+            viewModel.characterLiveData.observe(viewLifecycleOwner) { character ->
+                character.apply {
+                    tvName.text = name
+                    tvSpecies.text = species
+                    tvCreated.text = cutCreated
+                    tvGender.text = gender
+                    tvStatus.text = status
+                    Glide.with(view.context).load(image)
+                        .into(ivImage)
+                    topAppBarDetail.title = name
+                }
             }
         }
     }

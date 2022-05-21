@@ -13,12 +13,12 @@ import com.example.rickandmortyguide.domain.GetCharacterByIdUseCase
 import com.example.rickandmortyguide.domain.GetCharactersBySearchUseCase
 import com.example.rickandmortyguide.domain.GetWholeListUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
-class CharactersViewModel(application: Application): AndroidViewModel(application) {
+class CharactersViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repo: CharactersRepositoryImpl = CharactersRepositoryImpl(getApplication<Application>().applicationContext)
+    private val repo: CharactersRepositoryImpl =
+        CharactersRepositoryImpl(getApplication<Application>().applicationContext)
 
     private val getCharacterByIdUseCase = GetCharacterByIdUseCase(repo)
     private val getCharacterBySearchUseCase = GetCharactersBySearchUseCase(repo)
@@ -39,5 +39,5 @@ class CharactersViewModel(application: Application): AndroidViewModel(applicatio
 
     fun getWholeList(): Flow<PagingData<Character>> {
         return getWholeListUseCase.getWholeList().cachedIn(viewModelScope)
-        }
     }
+}

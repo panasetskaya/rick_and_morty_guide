@@ -1,6 +1,5 @@
 package com.example.rickandmortyguide.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,18 +12,20 @@ import com.bumptech.glide.Glide
 import com.example.rickandmortyguide.R
 import com.example.rickandmortyguide.domain.Character
 
-class CharacterPagingAdapter: PagingDataAdapter<Character, CharacterPagingAdapter.CharacterViewHolder>(COMPARATOR) {
+class CharacterPagingAdapter :
+    PagingDataAdapter<Character, CharacterPagingAdapter.CharacterViewHolder>(COMPARATOR) {
 
     var onCharacterClick: ((Character) -> Unit)? = null
 
-    class CharacterViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun getInstance(parent: ViewGroup): CharacterViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.character_item, parent,false)
+                val view = inflater.inflate(R.layout.character_item, parent, false)
                 return CharacterViewHolder(view)
             }
         }
+
         var textViewCharacterName: TextView = itemView.findViewById(R.id.textViewCharacterName)
         var imageViewCharacterImage: ImageView = itemView.findViewById(R.id.imageViewCharacterImage)
         val thisItemView = itemView

@@ -1,20 +1,15 @@
 package com.example.rickandmortyguide.data
 
 import android.content.Context
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.rickandmortyguide.domain.Character
 import com.example.rickandmortyguide.domain.CharactersRepository
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 
-class CharactersRepositoryImpl(val context: Context): CharactersRepository {
+class CharactersRepositoryImpl(val context: Context) : CharactersRepository {
 
     val apiService = ApiPagingService.getService()
     val db = CharactersDatabase.getInstance(context)
@@ -28,7 +23,7 @@ class CharactersRepositoryImpl(val context: Context): CharactersRepository {
     }
 
     override fun getCharactersBySearch(query: String): Flow<PagingData<Character>> {
-        return  loadCharactersByQuery(query).flow
+        return loadCharactersByQuery(query).flow
     }
 
     @OptIn(ExperimentalPagingApi::class)
@@ -38,7 +33,7 @@ class CharactersRepositoryImpl(val context: Context): CharactersRepository {
                 enablePlaceholders = true,
                 pageSize = 20
             ),
-            remoteMediator = CharacterRemoteMediator(db,apiService)
+            remoteMediator = CharacterRemoteMediator(db, apiService)
         ) {
             db.charactersDao().getWholeList()
         }
@@ -52,7 +47,7 @@ class CharactersRepositoryImpl(val context: Context): CharactersRepository {
                 enablePlaceholders = true,
                 pageSize = 20
             ),
-            remoteMediator = CharacterRemoteMediator(db,apiService)
+            remoteMediator = CharacterRemoteMediator(db, apiService)
         ) {
             db.charactersDao().getCharactersBySearch(query)
         }
