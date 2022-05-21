@@ -27,7 +27,7 @@ class CharactersPagingSource(val context: Context, val db: CharactersDatabase, p
 
         return try {
             var result = listOf<Character>()
-            api.getPagingCharactersExample(pageIndex).characters?.let {
+            api.getPagingCharactersExample(pageIndex).characters.let {
                 result = it
             }
             GlobalScope.launch {
