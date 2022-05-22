@@ -1,18 +1,25 @@
 package com.example.rickandmortyguide.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.compose.ui.text.capitalize
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.paging.filter
+import androidx.paging.map
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyguide.R
+import com.example.rickandmortyguide.domain.Character
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
@@ -39,25 +46,13 @@ class CharacterListFragment : Fragment() {
         )[CharactersViewModel::class.java]
         setViews(view)
         setAdapter()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        launchViewModel()
-    }
-
-    private fun launchViewModel() {
-        lifecycleScope.launch {
-            viewModel.getWholeList().distinctUntilChanged().collectLatest {pagingData ->
-                pagingAdapter.submitData(lifecycle, pagingData)
-            }
-        }
+        searching(searchView)
+        launchViewModel("")
     }
 
     private fun setViews(view: View) {
-        searchView = view.findViewById(R.id.searchViewMain)
-        searching(searchView)
         recyclerViewCharacters = view.findViewById(R.id.recyclerCharacters)
+        searchView = view.findViewById(R.id.searchViewMain)
     }
 
     private fun setAdapter() {
@@ -79,27 +74,37 @@ class CharacterListFragment : Fragment() {
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newQuery: String?): Boolean {
                 if (newQuery != null) {
-                    lifecycleScope.launch {
-                        viewModel.getCharacterBySearch(newQuery).distinctUntilChanged()
-                            .collectLatest { pagingData ->
-                                pagingAdapter.submitData(lifecycle, pagingData)
-                            }
-                    }
+                    launchViewModel(newQuery)
                 }
                 return false
             }
             override fun onQueryTextChange(newText: String): Boolean {
-                lifecycleScope.launch {
-                    viewModel.getCharacterBySearch(newText).distinctUntilChanged().collectLatest {pagingData ->
-                        pagingAdapter.submitData(lifecycle, pagingData)
-                    }
-                }
-                //TODO("если найти что-то, перейти на детальную страницу и потом обратно,
-                // то получается чехарда - данные начинают произвольно загружаться в любом порядке
-                // и прыгать туда-сюда")
-                return true
+                launchViewModel(newText)
+                return false
             }
 
         })
+    }
+
+    private fun launchViewModel(query: String) {
+        val lowerQuery = query.lowercase()
+        val upperQuery = query.replaceFirstChar {
+            it.uppercase()
+        }
+        lifecycleScope.launch {
+            viewModel.getWholeList()
+                .map { pagingData ->
+                    pagingData.filter { character ->
+                        if (character.name!=null) {
+                            character.name.contains(lowerQuery) || character.name.contains(upperQuery)
+                        } else {
+                            false
+                        }
+                    }
+                }
+                .distinctUntilChanged().collectLatest {pagingData ->
+                    pagingAdapter.submitData(lifecycle, pagingData)
+                }
+        }
     }
 }

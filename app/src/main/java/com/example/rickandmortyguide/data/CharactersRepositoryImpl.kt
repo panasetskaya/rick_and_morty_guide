@@ -22,10 +22,6 @@ class CharactersRepositoryImpl(val context: Context) : CharactersRepository {
         return loadAllCharacters().flow
     }
 
-    override fun getCharactersBySearch(query: String): Flow<PagingData<Character>> {
-        return loadCharactersByQuery(query).flow
-    }
-
     @OptIn(ExperimentalPagingApi::class)
     private fun loadAllCharacters(): Pager<Int, Character> {
         val pager = Pager(
@@ -36,20 +32,6 @@ class CharactersRepositoryImpl(val context: Context) : CharactersRepository {
             remoteMediator = CharacterRemoteMediator(db, apiService)
         ) {
             db.charactersDao().getWholeList()
-        }
-        return pager
-    }
-
-    @OptIn(ExperimentalPagingApi::class)
-    private fun loadCharactersByQuery(query: String): Pager<Int, Character> {
-        val pager = Pager(
-            config = PagingConfig(
-                enablePlaceholders = true,
-                pageSize = 20
-            ),
-            remoteMediator = CharacterRemoteMediator(db, apiService)
-        ) {
-            db.charactersDao().getCharactersBySearch(query)
         }
         return pager
     }
