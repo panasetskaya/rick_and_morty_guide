@@ -8,8 +8,9 @@ import androidx.paging.PagingData
 import com.example.rickandmortyguide.domain.Character
 import com.example.rickandmortyguide.domain.CharactersRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class CharactersRepositoryImpl(val context: Context) : CharactersRepository {
+class CharactersRepositoryImpl @Inject constructor(val context: Context) : CharactersRepository {
 
     val apiService = ApiPagingService.getService()
     val db = CharactersDatabase.getInstance(context)
