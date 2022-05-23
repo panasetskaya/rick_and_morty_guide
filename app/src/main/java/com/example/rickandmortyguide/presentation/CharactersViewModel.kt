@@ -13,14 +13,9 @@ import com.example.rickandmortyguide.domain.GetCharacterByIdUseCase
 import com.example.rickandmortyguide.domain.GetWholeListUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-// @Inject tells Dagger how to provide instances of this type
-// Dagger also knows that Application is a dependency
-class CharactersViewModel (application: Application) : AndroidViewModel(application) {
-
-    private val repo: CharactersRepositoryImpl =
-        CharactersRepositoryImpl(getApplication<Application>().applicationContext)
+class CharactersViewModel @Inject constructor(application: Application, repo: CharactersRepositoryImpl) : AndroidViewModel(application) {
 
     private val getCharacterByIdUseCase = GetCharacterByIdUseCase(repo)
     private val getWholeListUseCase = GetWholeListUseCase(repo)
