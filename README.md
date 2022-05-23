@@ -1,5 +1,5 @@
 # rick_and_morty_guide
-An app on Rick and Morty characters, made according to the technical requirement below. Used Paging 3. 
+An app on Rick and Morty characters, made according to the technical requirement below. Used Paging 3, Dagger2. 
 
 --------------------------------------------------------
 
