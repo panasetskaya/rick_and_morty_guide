@@ -1,22 +1,16 @@
 package com.example.rickandmortyguide.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.compose.ui.text.capitalize
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.paging.filter
-import androidx.paging.map
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyguide.R
-import com.example.rickandmortyguide.domain.Character
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -40,10 +34,7 @@ class CharacterListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            CharactersViewModelFactory(requireActivity().application)
-        )[CharactersViewModel::class.java]
+        viewModel = (activity as MainActivity).viewModel
         setViews(view)
         setAdapter()
         searching(searchView)
@@ -65,7 +56,9 @@ class CharacterListFragment : Fragment() {
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         pagingAdapter.onCharacterClick = { character ->
             val action =
-                CharacterListFragmentDirections.actionCharacterListFragmentToDetailsFragment(character.id)
+                CharacterListFragmentDirections.actionCharacterListFragmentToDetailsFragment(
+                    character.id
+                )
             recyclerViewCharacters.findNavController().navigate(action)
         }
     }
@@ -78,6 +71,7 @@ class CharacterListFragment : Fragment() {
                 }
                 return false
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 launchViewModel(newText)
                 return false
@@ -95,14 +89,16 @@ class CharacterListFragment : Fragment() {
             viewModel.getWholeList()
                 .map { pagingData ->
                     pagingData.filter { character ->
-                        if (character.name!=null) {
-                            character.name.contains(lowerQuery) || character.name.contains(upperQuery)
+                        if (character.name != null) {
+                            character.name.contains(lowerQuery) || character.name.contains(
+                                upperQuery
+                            )
                         } else {
                             false
                         }
                     }
                 }
-                .distinctUntilChanged().collectLatest {pagingData ->
+                .distinctUntilChanged().collectLatest { pagingData ->
                     pagingAdapter.submitData(lifecycle, pagingData)
                 }
         }

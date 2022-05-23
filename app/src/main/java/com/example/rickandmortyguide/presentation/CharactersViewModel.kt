@@ -14,7 +14,10 @@ import com.example.rickandmortyguide.domain.GetWholeListUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class CharactersViewModel(application: Application) : AndroidViewModel(application) {
+
+// @Inject tells Dagger how to provide instances of this type
+// Dagger also knows that Application is a dependency
+class CharactersViewModel (application: Application) : AndroidViewModel(application) {
 
     private val repo: CharactersRepositoryImpl =
         CharactersRepositoryImpl(getApplication<Application>().applicationContext)
