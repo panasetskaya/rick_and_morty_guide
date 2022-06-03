@@ -45,6 +45,7 @@ class CharacterPagingAdapter :
         getItem(position)?.let { char ->
             holder.textViewCharacterName.text = char.name
             Glide.with(holder.thisItemView.context).load(char.image).circleCrop()
+                .placeholder(R.drawable.img)
                 .into(holder.imageViewCharacterImage)
             holder.thisItemView.setOnClickListener { onCharacterClick?.invoke(char) }
         }
