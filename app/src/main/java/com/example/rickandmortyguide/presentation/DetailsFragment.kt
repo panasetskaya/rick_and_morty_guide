@@ -71,6 +71,7 @@ class DetailsFragment : Fragment() {
                     tvGender.text = gender
                     tvStatus.text = status
                     Glide.with(view.context).load(image)
+                        .placeholder(R.drawable.img)
                         .into(ivImage)
                     topAppBarDetail.title = name
                 }
