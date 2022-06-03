@@ -87,8 +87,8 @@ class CharacterListFragment : Fragment() {
         }
         lifecycleScope.launch {
             viewModel.getWholeList()
-                .map { pagingData ->
-                    pagingData.filter { character ->
+                .map {
+                    it.filter { character ->
                         if (character.name != null) {
                             character.name.contains(lowerQuery) || character.name.contains(
                                 upperQuery

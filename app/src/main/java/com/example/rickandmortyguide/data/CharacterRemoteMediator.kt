@@ -1,5 +1,6 @@
 package com.example.rickandmortyguide.data
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -22,7 +23,7 @@ class CharacterRemoteMediator(
         // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
         // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
         // triggering remote refresh.
-        return InitializeAction.SKIP_INITIAL_REFRESH
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     override suspend fun load(
@@ -31,6 +32,7 @@ class CharacterRemoteMediator(
     ): MediatorResult {
 
         return try {
+            Log.i("MyRes", "Mediator load try")
             // The network load method takes an optional after=<user.id>
             // parameter. For every page after the first, pass the last user
             // ID to let it continue from where it left off. For REFRESH,
@@ -67,6 +69,7 @@ class CharacterRemoteMediator(
                     nextKey
                 }
             }
+            Log.i("MyRes", "Mediator loadKey $loadKey")
 
             // Suspending network load via Retrofit. This doesn't need to be
             // wrapped in a withContext(Dispatcher.IO) { ... } block since
@@ -85,6 +88,7 @@ class CharacterRemoteMediator(
                 val prevKey = if (loadKey == STARTING_PAGE_INDEX) null else loadKey - 1
                 val nextKey = if (endOfPaginationReached) null else loadKey + 1
                 val keys = characters.map {
+                    Log.i("MyRes", "keys = characters.map $it")
                     RemoteKeys(characterId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 database.remoteKeysDao().insertAll(keys)
@@ -95,8 +99,10 @@ class CharacterRemoteMediator(
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
 
         } catch (e: IOException) {
+            Log.i("MyRes", "IOException")
             MediatorResult.Error(e)
         } catch (e: HttpException) {
+            Log.i("MyRes", "HttpException")
             MediatorResult.Error(e)
         }
 

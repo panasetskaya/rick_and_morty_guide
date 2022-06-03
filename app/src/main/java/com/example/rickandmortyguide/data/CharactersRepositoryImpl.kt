@@ -1,6 +1,7 @@
 package com.example.rickandmortyguide.data
 
 import android.content.Context
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -20,11 +21,13 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
     }
 
     override fun getWholeList(): Flow<PagingData<Character>> {
+        Log.i("MyRes", "CharactersRepositoryImpl.getWholeList()")
         return loadAllCharacters().flow
     }
 
     @OptIn(ExperimentalPagingApi::class)
     private fun loadAllCharacters(): Pager<Int, Character> {
+        Log.i("MyRes", "loadAllCharacters()")
         val pager = Pager(
             config = PagingConfig(
                 enablePlaceholders = true,
@@ -32,8 +35,10 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
             ),
             remoteMediator = CharacterRemoteMediator(db, apiService)
         ) {
+            Log.i("MyRes", "db.charactersDao().getWholeList()")
             db.charactersDao().getWholeList()
         }
+        Log.i("MyRes", "pager")
         return pager
     }
 }

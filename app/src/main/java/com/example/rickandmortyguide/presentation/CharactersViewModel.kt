@@ -1,6 +1,7 @@
 package com.example.rickandmortyguide.presentation
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,6 +31,7 @@ class CharactersViewModel @Inject constructor(application: Application, repo: Ch
     }
 
     fun getWholeList(): Flow<PagingData<Character>> {
+        Log.i("MyRes", "CharactersViewModel.getWholeList()")
         return getWholeListUseCase.getWholeList().cachedIn(viewModelScope)
     }
 }
