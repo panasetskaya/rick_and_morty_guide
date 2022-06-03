@@ -15,6 +15,11 @@ interface ApiPagingService {
         @Query("page") page: Int
     ): Example
 
+    @GET("character")
+    suspend fun getSearchedCharactersExample(
+        @Query("name") name: String
+    ): Example
+
     companion object {
 
         private const val BASE_URL = "https://rickandmortyapi.com/api/"
