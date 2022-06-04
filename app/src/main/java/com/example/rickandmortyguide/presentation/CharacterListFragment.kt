@@ -38,7 +38,8 @@ class CharacterListFragment : Fragment() {
         setViews(view)
         setAdapter()
         searching(searchView)
-        launchViewModel("")
+        launchWholeList()
+
     }
 
     private fun setViews(view: View) {
@@ -67,40 +68,38 @@ class CharacterListFragment : Fragment() {
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newQuery: String?): Boolean {
                 if (newQuery != null) {
-                    launchViewModel(newQuery)
+                    launchSearch(newQuery)
                 }
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                launchViewModel(newText)
+                launchSearch(newText)
                 return false
             }
-
         })
+        search.setOnCloseListener {
+            launchWholeList()
+            false
+        }
     }
 
-    private fun launchViewModel(query: String) {
-        val lowerQuery = query.lowercase()
+    private fun launchWholeList() {
+        lifecycleScope.launch {
+            viewModel.getWholeList().distinctUntilChanged().collectLatest { pagingData ->
+                pagingAdapter.submitData(lifecycle, pagingData)
+            }
+        }
+    }
+
+    private fun launchSearch(query: String) {
         val upperQuery = query.replaceFirstChar {
             it.uppercase()
         }
         lifecycleScope.launch {
-            viewModel.getWholeList()
-                .map {
-                    it.filter { character ->
-                        if (character.name != null) {
-                            character.name.contains(lowerQuery) || character.name.contains(
-                                upperQuery
-                            )
-                        } else {
-                            false
-                        }
-                    }
-                }
-                .distinctUntilChanged().collectLatest { pagingData ->
-                    pagingAdapter.submitData(lifecycle, pagingData)
-                }
+            viewModel.getSearchedList(upperQuery).distinctUntilChanged().collectLatest { pagData ->
+                pagingAdapter.submitData(lifecycle, pagData)
+            }
         }
     }
 }

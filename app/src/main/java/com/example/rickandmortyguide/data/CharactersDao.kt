@@ -25,7 +25,7 @@ interface CharactersDao {
     @Query("SELECT count(*) FROM character")
     suspend fun checkIfIsEmpty(): Int
 
-//    @Query("SELECT * FROM character WHERE name LIKE '%' || :search || '%'")
-//    fun getCharactersBySearch(search: String): PagingSource<Int, Character>
+    @Query("SELECT * FROM character WHERE name LIKE '%' || :search || '%'")
+    fun getCharactersBySearch(search: String): PagingSource<Int, Character>
 
 }

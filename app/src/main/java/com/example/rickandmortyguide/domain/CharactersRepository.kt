@@ -9,4 +9,6 @@ interface CharactersRepository {
 
     fun getWholeList(): Flow<PagingData<Character>>
 
+    fun getSearchedList(query: String): Flow<PagingData<Character>>
+
 }

@@ -11,6 +11,7 @@ import androidx.paging.cachedIn
 import com.example.rickandmortyguide.data.CharactersRepositoryImpl
 import com.example.rickandmortyguide.domain.Character
 import com.example.rickandmortyguide.domain.GetCharacterByIdUseCase
+import com.example.rickandmortyguide.domain.GetSearchedListUseCase
 import com.example.rickandmortyguide.domain.GetWholeListUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class CharactersViewModel @Inject constructor(application: Application, repo: Ch
 
     private val getCharacterByIdUseCase = GetCharacterByIdUseCase(repo)
     private val getWholeListUseCase = GetWholeListUseCase(repo)
+    private val getSearchedListUseCase = GetSearchedListUseCase(repo)
 
     private val _characterLiveData = MutableLiveData<Character>()
     val characterLiveData: LiveData<Character> = _characterLiveData
@@ -33,5 +35,9 @@ class CharactersViewModel @Inject constructor(application: Application, repo: Ch
     fun getWholeList(): Flow<PagingData<Character>> {
         Log.i("MyRes", "CharactersViewModel.getWholeList()")
         return getWholeListUseCase.getWholeList().cachedIn(viewModelScope)
+    }
+
+    fun getSearchedList(query: String): Flow<PagingData<Character>> {
+        return getSearchedListUseCase.getSearchedList(query).cachedIn(viewModelScope)
     }
 }

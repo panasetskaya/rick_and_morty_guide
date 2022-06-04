@@ -15,11 +15,12 @@ private const val STARTING_PAGE_INDEX = 0
 @OptIn(ExperimentalPagingApi::class)
 class SearchCharacterRemoteMediator(
     private val database: CharactersDatabase,
-    private val networkService: ApiPagingService
+    private val networkService: ApiPagingService,
+    private val query: String
 ) : RemoteMediator<Int, Character>() {
 
     override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
+        return InitializeAction.SKIP_INITIAL_REFRESH
     }
 
     override suspend fun load(
@@ -28,11 +29,6 @@ class SearchCharacterRemoteMediator(
     ): MediatorResult {
 
         return try {
-            Log.i("MyRes", "Mediator load try")
-            // The network load method takes an optional after=<user.id>
-            // parameter. For every page after the first, pass the last user
-            // ID to let it continue from where it left off. For REFRESH,
-            // pass null to load the first page.
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> {
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
@@ -40,11 +36,6 @@ class SearchCharacterRemoteMediator(
                 }
                 LoadType.PREPEND -> {
                     val remoteKeys = getRemoteKeyForFirstItem(state)
-                    // If remoteKeys is null, that means the refresh result is not in the database yet.
-                    // We can return Success with `endOfPaginationReached = false` because Paging
-                    // will call this method again if RemoteKeys becomes non-null.
-                    // If remoteKeys is NOT NULL but its prevKey is null, that means we've reached
-                    // the end of pagination for prepend.
                     val prevKey = remoteKeys?.prevKey
                     if (prevKey == null) {
                         return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
@@ -53,11 +44,6 @@ class SearchCharacterRemoteMediator(
                 }
                 LoadType.APPEND -> {
                     val remoteKeys = getRemoteKeyForLastItem(state)
-                    // If remoteKeys is null, that means the refresh result is not in the database yet.
-                    // We can return Success with `endOfPaginationReached = false` because Paging
-                    // will call this method again if RemoteKeys becomes non-null.
-                    // If remoteKeys is NOT NULL but its prevKey is null, that means we've reached
-                    // the end of pagination for append.
                     val nextKey = remoteKeys?.nextKey
                     if (nextKey == null) {
                         return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
@@ -65,29 +51,23 @@ class SearchCharacterRemoteMediator(
                     nextKey
                 }
             }
-            Log.i("MyRes", "Mediator loadKey $loadKey")
-
-            // Suspending network load via Retrofit. This doesn't need to be
-            // wrapped in a withContext(Dispatcher.IO) { ... } block since
-            // Retrofit's Coroutine CallAdapter dispatches on a worker
-            // thread.
-            val apiResponse = networkService.getSearchedCharactersExample(loadKey)
+            val apiResponse = networkService.getSearchedCharactersExample(query, loadKey)
 
             val characters = apiResponse.characters
             val endOfPaginationReached = characters.isEmpty()
             database.withTransaction {
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {
-                    database.remoteKeysDao().clearRemoteKeys()
-                    database.charactersDao().deleteAll()
+                    database.searchRemoteKeysDao().clearSearchRemoteKeys()
+          //          database.charactersDao().deleteAll()
                 }
                 val prevKey = if (loadKey == STARTING_PAGE_INDEX) null else loadKey - 1
                 val nextKey = if (endOfPaginationReached) null else loadKey + 1
                 val keys = characters.map {
                     Log.i("MyRes", "keys = characters.map $it")
-                    RemoteKeys(characterId = it.id, prevKey = prevKey, nextKey = nextKey)
+                    SearchRemoteKeys(characterId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
-                database.remoteKeysDao().insertAll(keys)
+                database.searchRemoteKeysDao().insertAll(keys)
                 for (i in characters) {
                     database.charactersDao().insertCharacter(i)
                 }
