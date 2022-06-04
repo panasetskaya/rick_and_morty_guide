@@ -13,23 +13,13 @@ import java.io.IOException
 private const val STARTING_PAGE_INDEX = 0
 
 @OptIn(ExperimentalPagingApi::class)
-class CharacterRemoteMediator(
+class SearchCharacterRemoteMediator(
     private val database: CharactersDatabase,
     private val networkService: ApiPagingService
 ) : RemoteMediator<Int, Character>() {
 
     override suspend fun initialize(): InitializeAction {
-        // Launch remote refresh as soon as paging starts and do not trigger remote prepend or
-        // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
-        // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
-        // triggering remote refresh.
-        val databaseIsEmpty = database.charactersDao().checkIfIsEmpty() == 0
-        return if (databaseIsEmpty) {
-            InitializeAction.LAUNCH_INITIAL_REFRESH
-        } else {
-            InitializeAction.SKIP_INITIAL_REFRESH
-        }
-
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     override suspend fun load(
@@ -81,7 +71,7 @@ class CharacterRemoteMediator(
             // wrapped in a withContext(Dispatcher.IO) { ... } block since
             // Retrofit's Coroutine CallAdapter dispatches on a worker
             // thread.
-            val apiResponse = networkService.getPagingCharactersExample(loadKey)
+            val apiResponse = networkService.getSearchedCharactersExample(loadKey)
 
             val characters = apiResponse.characters
             val endOfPaginationReached = characters.isEmpty()
@@ -116,34 +106,34 @@ class CharacterRemoteMediator(
     }
 
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Character>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Character>): SearchRemoteKeys? {
         // Get the last page that was retrieved, that contained items.
         // From that last page, get the last item
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { character ->
                 // Get the remote keys of the last item retrieved
-                database.remoteKeysDao().remoteKeysRepoId(character.id)
+                database.searchRemoteKeysDao().searchRemoteKeysRepoId(character.id)
             }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Character>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Character>): SearchRemoteKeys? {
         // Get the first page that was retrieved, that contained items.
         // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { character ->
                 // Get the remote keys of the first items retrieved
-                database.remoteKeysDao().remoteKeysRepoId(character.id)
+                database.searchRemoteKeysDao().searchRemoteKeysRepoId(character.id)
             }
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
         state: PagingState<Int, Character>
-    ): RemoteKeys? {
+    ): SearchRemoteKeys? {
         // The paging library is trying to load data after the anchor position
         // Get the item closest to the anchor position
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { characterId ->
-                database.remoteKeysDao().remoteKeysRepoId(characterId)
+                database.searchRemoteKeysDao().searchRemoteKeysRepoId(characterId)
             }
         }
     }
