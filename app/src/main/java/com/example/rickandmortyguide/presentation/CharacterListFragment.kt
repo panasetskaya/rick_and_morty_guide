@@ -60,7 +60,7 @@ class CharacterListFragment : Fragment() {
         pagingAdapter.onCharacterClick = { character ->
             val action =
                 CharacterListFragmentDirections.actionCharacterListFragmentToDetailsFragment(
-                    character.id
+                    character
                 )
             recyclerViewCharacters.findNavController().navigate(action)
         }

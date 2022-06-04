@@ -10,11 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.rickandmortyguide.R
+import com.example.rickandmortyguide.domain.Character
 import com.google.android.material.appbar.MaterialToolbar
 
 
 class DetailsFragment : Fragment() {
-    private var idParam: Int? = null
+    private lateinit var characterParam: Character
     private lateinit var tvName: TextView
     private lateinit var tvGender: TextView
     private lateinit var tvStatus: TextView
@@ -37,7 +38,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
-        idParam = args.idParam
+        characterParam = args.idParam
         findViews(view)
         setValues(view)
     }
@@ -61,21 +62,16 @@ class DetailsFragment : Fragment() {
 
     private fun setValues(view: View) {
         setAppBar()
-        idParam?.let {
-            viewModel.getCharacterById(it)
-            viewModel.characterLiveData.observe(viewLifecycleOwner) { character ->
-                character.apply {
-                    tvName.text = name
-                    tvSpecies.text = species
-                    tvCreated.text = cutCreated
-                    tvGender.text = gender
-                    tvStatus.text = status
-                    Glide.with(view.context).load(image)
-                        .placeholder(R.drawable.img)
-                        .into(ivImage)
-                    topAppBarDetail.title = name
-                }
-            }
+        characterParam.let {
+            tvName.text = it.name
+            tvSpecies.text = it.species
+            tvCreated.text = it.created?.substring(0, 10)
+            tvGender.text = it.gender
+            tvStatus.text = it.status
+            Glide.with(view.context).load(it.image)
+                .placeholder(R.drawable.img)
+                .into(ivImage)
+            topAppBarDetail.title = it.name
         }
     }
 }
