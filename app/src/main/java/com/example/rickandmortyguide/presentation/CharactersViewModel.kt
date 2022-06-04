@@ -40,19 +40,6 @@ class CharactersViewModel @Inject constructor(application: Application, repo: Ch
     }
 
     fun getSearchedList(query: String): Flow<PagingData<Character>> {
-        val lowerQuery = query.lowercase()
-        val upperQuery = query.replaceFirstChar {
-            it.uppercase()
-        }
         return getSearchedListUseCase.getSearchedList(query).cachedIn(viewModelScope)
-            .map {
-            it.filter { character ->
-                if (character.name != null) {
-                    character.name.contains(lowerQuery) || character.name.contains(upperQuery)
-                } else {
-                    false
-                }
-            }
-        }
     }
 }

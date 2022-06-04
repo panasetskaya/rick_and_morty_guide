@@ -51,7 +51,7 @@ class SearchCharacterRemoteMediator(
                     nextKey
                 }
             }
-            val apiResponse = networkService.getSearchedCharactersExample(query, loadKey)
+            val apiResponse = networkService.getSearchedCharactersExample(loadKey,query)
 
             val characters = apiResponse.characters
             val endOfPaginationReached = characters.isEmpty()
@@ -59,7 +59,7 @@ class SearchCharacterRemoteMediator(
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {
                     database.searchRemoteKeysDao().clearSearchRemoteKeys()
-          //          database.charactersDao().deleteAll()
+         //           database.charactersDao().deleteAll()
                 }
                 val prevKey = if (loadKey == STARTING_PAGE_INDEX) null else loadKey - 1
                 val nextKey = if (endOfPaginationReached) null else loadKey + 1

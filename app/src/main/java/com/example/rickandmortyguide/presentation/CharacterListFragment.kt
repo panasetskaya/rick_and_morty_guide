@@ -71,13 +71,15 @@ class CharacterListFragment : Fragment() {
             override fun onQueryTextSubmit(newQuery: String?): Boolean {
                 if (newQuery != null) {
                     launchSearch(newQuery)
+                    pagingAdapter.refresh()
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 launchSearch(newText)
-                return false
+                pagingAdapter.refresh()
+                return true
             }
         })
         search.setOnCloseListener {
@@ -99,6 +101,7 @@ class CharacterListFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.getSearchedList(query).distinctUntilChanged().collectLatest { pagData ->
                 pagingAdapter.submitData(lifecycle, pagData)
+
             }
         }
     }

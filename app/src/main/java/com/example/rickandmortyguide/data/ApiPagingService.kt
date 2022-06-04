@@ -17,8 +17,8 @@ interface ApiPagingService {
 
     @GET("character")
     suspend fun getSearchedCharactersExample(
-        @Query("name") name: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("name") name: String
     ): Example
 
     companion object {

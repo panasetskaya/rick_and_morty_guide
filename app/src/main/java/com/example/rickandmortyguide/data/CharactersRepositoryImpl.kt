@@ -56,7 +56,7 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
             ),
             remoteMediator = SearchCharacterRemoteMediator(db, apiService, query)
         ) {
-            db.charactersDao().getWholeList()
+            db.charactersDao().getCharactersBySearch(query)
         }
         Log.i("MyRes", "search pager")
         return pager
