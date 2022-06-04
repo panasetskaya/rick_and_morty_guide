@@ -24,14 +24,7 @@ class CharacterRemoteMediator(
         // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
         // triggering remote refresh.
         val databaseIsEmpty = database.charactersDao().checkIfIsEmpty() == 0
-        Log.i("MyResult", "databaseIsEmpty: $databaseIsEmpty")
-        var databaseHasNoOddCharacters = true
-        if (!databaseIsEmpty) {
-            databaseHasNoOddCharacters = database.charactersDao().getLastCharacter().id == database.charactersDao().checkIfIsEmpty()
-        }
-        Log.i("MyResult", "databaseHasNoOddCharacters: $databaseHasNoOddCharacters")
-        val refreshNeeded = databaseIsEmpty || !databaseHasNoOddCharacters
-        Log.i("MyResult", "refreshNeeded: $refreshNeeded")
+        val refreshNeeded = databaseIsEmpty
         return if (refreshNeeded) {
             Log.i("MyResult", "LAUNCH_INITIAL_REFRESH")
             InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -40,7 +33,6 @@ class CharacterRemoteMediator(
             Log.i("MyResult", "SKIP_INITIAL_REFRESH")
             InitializeAction.SKIP_INITIAL_REFRESH
         }
-
     }
 
     override suspend fun load(

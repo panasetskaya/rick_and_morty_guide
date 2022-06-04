@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -37,11 +38,11 @@ class CharacterListFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
         setViews(view)
         setAdapter()
-        if (searchView.isIconified) {
-            launchWholeList()
-            searching(searchView)
-        } else {
-            searching(searchView)}
+        searching(searchView)
+        launchWholeList()
+        if (searchView.isNotEmpty()) {
+            launchSearch(searchView.query.toString())
+        }
     }
 
     private fun setViews(view: View) {
@@ -64,27 +65,33 @@ class CharacterListFragment : Fragment() {
                 )
             recyclerViewCharacters.findNavController().navigate(action)
         }
+        pagingAdapter.refresh()
     }
 
     private fun searching(search: SearchView) {
+        search.setOnQueryTextFocusChangeListener { view, b ->
+            if (b) {
+                launchSearch(searchView.query.toString())
+            } else {
+                launchWholeList()
+            }
+        }
+
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newQuery: String?): Boolean {
                 if (newQuery != null) {
                     launchSearch(newQuery)
-                    pagingAdapter.refresh()
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 launchSearch(newText)
-                pagingAdapter.refresh()
                 return true
             }
         })
         search.setOnCloseListener {
             launchWholeList()
-            pagingAdapter.refresh()
             false
         }
     }
@@ -104,5 +111,6 @@ class CharacterListFragment : Fragment() {
 
             }
         }
+        pagingAdapter.refresh()
     }
 }
