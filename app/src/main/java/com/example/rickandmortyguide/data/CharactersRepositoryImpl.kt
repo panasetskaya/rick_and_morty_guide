@@ -52,11 +52,11 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
         val pager = Pager(
             config = PagingConfig(
                 enablePlaceholders = true,
-                pageSize = 20
+                pageSize = 50
             ),
             remoteMediator = SearchCharacterRemoteMediator(db, apiService, query)
         ) {
-            db.charactersDao().getCharactersBySearch(query)
+            db.charactersDao().getWholeList()
         }
         Log.i("MyRes", "search pager")
         return pager

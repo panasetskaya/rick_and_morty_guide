@@ -37,9 +37,11 @@ class CharacterListFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
         setViews(view)
         setAdapter()
-        searching(searchView)
-        launchWholeList()
-
+        if (searchView.isIconified) {
+            launchWholeList()
+            searching(searchView)
+        } else {
+            searching(searchView)}
     }
 
     private fun setViews(view: View) {
@@ -70,7 +72,7 @@ class CharacterListFragment : Fragment() {
                 if (newQuery != null) {
                     launchSearch(newQuery)
                 }
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
@@ -80,6 +82,7 @@ class CharacterListFragment : Fragment() {
         })
         search.setOnCloseListener {
             launchWholeList()
+            pagingAdapter.refresh()
             false
         }
     }
@@ -93,11 +96,8 @@ class CharacterListFragment : Fragment() {
     }
 
     private fun launchSearch(query: String) {
-        val upperQuery = query.replaceFirstChar {
-            it.uppercase()
-        }
         lifecycleScope.launch {
-            viewModel.getSearchedList(upperQuery).distinctUntilChanged().collectLatest { pagData ->
+            viewModel.getSearchedList(query).distinctUntilChanged().collectLatest { pagData ->
                 pagingAdapter.submitData(lifecycle, pagData)
             }
         }
