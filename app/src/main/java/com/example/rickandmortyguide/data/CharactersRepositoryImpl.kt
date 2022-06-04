@@ -46,17 +46,16 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
         return pager
     }
 
-    @OptIn(ExperimentalPagingApi::class)
     private fun loadSearchedCharacters(query: String): Pager<Int, Character> {
         Log.i("MyRes", "loadAllCharacters()")
         val pager = Pager(
-            config = PagingConfig(
+            // Configure how data is loaded by passing additional properties to
+            // PagingConfig, such as prefetchDistance.
+            PagingConfig(
                 enablePlaceholders = true,
-                pageSize = 50
-            ),
-            remoteMediator = SearchCharacterRemoteMediator(db, apiService, query)
+                pageSize = 20)
         ) {
-            db.charactersDao().getCharactersBySearch(query)
+            CharacterPagingSource(apiService, query)
         }
         Log.i("MyRes", "search pager")
         return pager

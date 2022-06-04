@@ -28,4 +28,7 @@ interface CharactersDao {
     @Query("SELECT * FROM character WHERE name LIKE '%' || :search || '%'")
     fun getCharactersBySearch(search: String): PagingSource<Int, Character>
 
+    @Query("SELECT * FROM character ORDER BY id DESC LIMIT 1")
+    suspend fun getLastCharacter(): Character
+
 }

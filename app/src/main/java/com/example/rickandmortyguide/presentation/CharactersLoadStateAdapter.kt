@@ -30,14 +30,10 @@ class CharactersLoadStateAdapter(private val adapter: PagingDataAdapter<*, *>) :
         private val binding: LoadingStateItemBinding,
         private val retryCallback: () -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.buttonRetry.setOnClickListener { retryCallback() }
-        }
 
         fun bind(loadState: LoadState) {
             with(binding) {
                 progressBarLoading.isVisible = loadState is LoadState.Loading
-                buttonRetry.isVisible = loadState is LoadState.Error
                 textViewError.isVisible =
                     !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
                 textViewError.text =
