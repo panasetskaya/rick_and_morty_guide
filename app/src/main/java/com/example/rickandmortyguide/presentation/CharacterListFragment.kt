@@ -37,8 +37,11 @@ class CharacterListFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
         setViews(view)
         setAdapter()
-        searching(searchView)
-        launchViewModel("")
+        if (searchView.isIconified) {
+            launchWholeList()
+            searching(searchView)
+        } else {
+            searching(searchView)}
     }
 
     private fun setViews(view: View) {
@@ -57,7 +60,7 @@ class CharacterListFragment : Fragment() {
         pagingAdapter.onCharacterClick = { character ->
             val action =
                 CharacterListFragmentDirections.actionCharacterListFragmentToDetailsFragment(
-                    character.id
+                    character
                 )
             recyclerViewCharacters.findNavController().navigate(action)
         }
@@ -67,40 +70,39 @@ class CharacterListFragment : Fragment() {
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newQuery: String?): Boolean {
                 if (newQuery != null) {
-                    launchViewModel(newQuery)
+                    launchSearch(newQuery)
+                    pagingAdapter.refresh()
                 }
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                launchViewModel(newText)
-                return false
+                launchSearch(newText)
+                pagingAdapter.refresh()
+                return true
             }
-
         })
+        search.setOnCloseListener {
+            launchWholeList()
+            pagingAdapter.refresh()
+            false
+        }
     }
 
-    private fun launchViewModel(query: String) {
-        val lowerQuery = query.lowercase()
-        val upperQuery = query.replaceFirstChar {
-            it.uppercase()
-        }
+    private fun launchWholeList() {
         lifecycleScope.launch {
-            viewModel.getWholeList()
-                .map {
-                    it.filter { character ->
-                        if (character.name != null) {
-                            character.name.contains(lowerQuery) || character.name.contains(
-                                upperQuery
-                            )
-                        } else {
-                            false
-                        }
-                    }
-                }
-                .distinctUntilChanged().collectLatest { pagingData ->
-                    pagingAdapter.submitData(lifecycle, pagingData)
-                }
+            viewModel.getWholeList().distinctUntilChanged().collectLatest { pagingData ->
+                pagingAdapter.submitData(lifecycle, pagingData)
+            }
+        }
+    }
+
+    private fun launchSearch(query: String) {
+        lifecycleScope.launch {
+            viewModel.getSearchedList(query).distinctUntilChanged().collectLatest { pagData ->
+                pagingAdapter.submitData(lifecycle, pagData)
+
+            }
         }
     }
 }

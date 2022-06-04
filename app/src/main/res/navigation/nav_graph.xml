@@ -22,7 +22,6 @@
         tools:layout="@layout/fragment_details">
         <argument
             android:name="idParam"
-            android:defaultValue="1"
-            app:argType="integer"/>
+            app:argType="com.example.rickandmortyguide.domain.Character"/>
     </fragment>
 </navigation>

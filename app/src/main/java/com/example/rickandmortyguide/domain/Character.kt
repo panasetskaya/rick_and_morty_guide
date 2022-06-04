@@ -3,7 +3,10 @@ package com.example.rickandmortyguide.domain
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity
 data class Character(
     @PrimaryKey
@@ -21,6 +24,6 @@ data class Character(
     val created: String? = null,
     @Json(name = "image")
     val image: String? = null
-) {
+): Parcelable {
     var cutCreated: String? = created?.substring(0, 10)
 }

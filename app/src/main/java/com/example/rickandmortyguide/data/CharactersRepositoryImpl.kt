@@ -25,6 +25,10 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
         return loadAllCharacters().flow
     }
 
+    override fun getSearchedList(query:String): Flow<PagingData<Character>> {
+        return loadSearchedCharacters(query).flow
+    }
+
     @OptIn(ExperimentalPagingApi::class)
     private fun loadAllCharacters(): Pager<Int, Character> {
         Log.i("MyRes", "loadAllCharacters()")
@@ -39,6 +43,21 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
             db.charactersDao().getWholeList()
         }
         Log.i("MyRes", "pager")
+        return pager
+    }
+
+    private fun loadSearchedCharacters(query: String): Pager<Int, Character> {
+        Log.i("MyRes", "loadAllCharacters()")
+        val pager = Pager(
+            // Configure how data is loaded by passing additional properties to
+            // PagingConfig, such as prefetchDistance.
+            PagingConfig(
+                enablePlaceholders = true,
+                pageSize = 20)
+        ) {
+            CharacterPagingSource(apiService, query)
+        }
+        Log.i("MyRes", "search pager")
         return pager
     }
 }
