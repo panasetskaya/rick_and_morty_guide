@@ -7,11 +7,8 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.rickandmortyguide.domain.Character
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.concurrent.TimeUnit
 
 private const val STARTING_PAGE_INDEX = 0
 
@@ -26,7 +23,7 @@ class CharacterRemoteMediator(
         // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
         // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
         // triggering remote refresh.
-        val databaseIsEmpty = database.charactersDao().checkIfIsEmpty()==0
+        val databaseIsEmpty = database.charactersDao().checkIfIsEmpty() == 0
         return if (databaseIsEmpty) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         } else {
