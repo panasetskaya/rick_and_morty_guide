@@ -70,10 +70,8 @@ class CharacterListFragment : Fragment() {
 
     private fun searching(search: SearchView) {
         search.setOnQueryTextFocusChangeListener { view, b ->
-            if (b) {
+            if (b && searchView.query.toString().length>0) {
                 launchSearch(searchView.query.toString())
-            } else {
-                launchWholeList()
             }
         }
 

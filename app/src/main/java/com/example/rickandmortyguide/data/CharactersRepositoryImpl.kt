@@ -55,7 +55,7 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
                 enablePlaceholders = false,
                 pageSize = 10)
         ) {
-            CharacterPagingSource(apiService, query)
+            CharacterPagingSource(apiService, query, context)
         }
         Log.i("MyRes", "search pager")
         return pager

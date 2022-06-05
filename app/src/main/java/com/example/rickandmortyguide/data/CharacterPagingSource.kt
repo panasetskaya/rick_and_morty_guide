@@ -1,6 +1,8 @@
 package com.example.rickandmortyguide.data
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickandmortyguide.domain.Character
@@ -12,8 +14,9 @@ private const val STARTING_PAGE_INDEX = 0
 
 class CharacterPagingSource(
     private val networkService: ApiPagingService,
-    private val query: String
-): PagingSource<Int, Character>() {
+    private val query: String,
+    private val context: Context
+) : PagingSource<Int, Character>() {
     override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
@@ -26,21 +29,26 @@ class CharacterPagingSource(
 
         return try {
             val pageIndex = params.key ?: STARTING_PAGE_INDEX
-            val apiResponse = networkService.getSearchedCharactersExample(pageIndex,query)
+            val apiResponse = networkService.getSearchedCharactersExample(pageIndex, query)
             var result: List<Character>
 
             apiResponse.characters.let {
+
                 result = it
+
+
                 Log.i("MyRes", "characters loaded")
             }
             val nextKey =
                 if (result.isEmpty()) {
                     null
-                } else { pageIndex+1 }
+                } else {
+                    pageIndex + 1
+                }
 
             LoadResult.Page(
                 data = result,
-                prevKey = if (pageIndex == STARTING_PAGE_INDEX) null else pageIndex-1,
+                prevKey = if (pageIndex == STARTING_PAGE_INDEX) null else pageIndex - 1,
                 nextKey = nextKey
             )
 

@@ -34,12 +34,14 @@ class CharactersViewModel @Inject constructor(application: Application, repo: Ch
         }
     }
 
+
     fun getWholeList(): Flow<PagingData<Character>> {
         Log.i("MyRes", "CharactersViewModel.getWholeList()")
         return getWholeListUseCase.getWholeList().cachedIn(viewModelScope)
     }
 
     fun getSearchedList(query: String): Flow<PagingData<Character>> {
+        Log.i("MyRes", "CharactersViewModel.getSearchedList")
         return getSearchedListUseCase.getSearchedList(query).cachedIn(viewModelScope)
     }
 }
