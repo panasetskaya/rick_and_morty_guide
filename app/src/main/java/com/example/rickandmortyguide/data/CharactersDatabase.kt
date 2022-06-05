@@ -6,12 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.rickandmortyguide.domain.Character
 
-@Database(entities = [Character::class, RemoteKeys::class, SearchRemoteKeys::class], version = 5, exportSchema = false)
+@Database(entities = [Character::class, RemoteKeys::class], version = 6, exportSchema = false)
 abstract class CharactersDatabase : RoomDatabase() {
 
     abstract fun charactersDao(): CharactersDao
     abstract fun remoteKeysDao(): RemoteKeysDao
-    abstract fun searchRemoteKeysDao(): SearchRemoteKeysDao
 
     companion object {
 

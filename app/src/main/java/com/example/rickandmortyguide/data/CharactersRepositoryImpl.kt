@@ -52,8 +52,8 @@ class CharactersRepositoryImpl @Inject constructor(val context: Context) : Chara
             // Configure how data is loaded by passing additional properties to
             // PagingConfig, such as prefetchDistance.
             PagingConfig(
-                enablePlaceholders = true,
-                pageSize = 20)
+                enablePlaceholders = false,
+                pageSize = 10)
         ) {
             CharacterPagingSource(apiService, query)
         }
