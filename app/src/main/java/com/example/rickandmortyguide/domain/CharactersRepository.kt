@@ -5,8 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {
 
-    suspend fun getCharacterById(id: Int): Character
-
     fun getWholeList(): Flow<PagingData<Character>>
 
     fun getSearchedList(query: String): Flow<PagingData<Character>>

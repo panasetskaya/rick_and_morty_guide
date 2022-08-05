@@ -1,4 +1,4 @@
-package com.example.rickandmortyguide.data
+package com.example.rickandmortyguide.data.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -13,13 +13,13 @@ interface ApiPagingService {
     @GET("character")
     suspend fun getPagingCharactersExample(
         @Query("page") page: Int
-    ): Example
+    ): CharactersListContainer
 
     @GET("character")
     suspend fun getSearchedCharactersExample(
         @Query("page") page: Int,
         @Query("name") name: String
-    ): Example
+    ): CharactersListContainer
 
     companion object {
 

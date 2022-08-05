@@ -1,4 +1,4 @@
-package com.example.rickandmortyguide.data
+package com.example.rickandmortyguide.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert

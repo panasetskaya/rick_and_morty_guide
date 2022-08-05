@@ -37,7 +37,9 @@ class CharactersLoadStateAdapter(private val adapter: PagingDataAdapter<*, *>) :
                 textViewError.isVisible =
                     !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
                 textViewError.text =
-                    textViewError.context.resources.getString(R.string.loading_failed)
+                        textViewError.context.resources.getString(R.string.loading_failed)
+
+
             }
         }
     }

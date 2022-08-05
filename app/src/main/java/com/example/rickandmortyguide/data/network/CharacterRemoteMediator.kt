@@ -1,4 +1,4 @@
-package com.example.rickandmortyguide.data
+package com.example.rickandmortyguide.data.network
 
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi
@@ -6,7 +6,9 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.rickandmortyguide.domain.Character
+import com.example.rickandmortyguide.data.CharacterDtoDb
+import com.example.rickandmortyguide.data.db.CharactersDatabase
+import com.example.rickandmortyguide.data.db.RemoteKeys
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -16,7 +18,7 @@ private const val STARTING_PAGE_INDEX = 0
 class CharacterRemoteMediator(
     private val database: CharactersDatabase,
     private val networkService: ApiPagingService
-) : RemoteMediator<Int, Character>() {
+) : RemoteMediator<Int, CharacterDtoDb>() {
 
     override suspend fun initialize(): InitializeAction {
         // Launch remote refresh as soon as paging starts and do not trigger remote prepend or
@@ -37,7 +39,7 @@ class CharacterRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Character>
+        state: PagingState<Int, CharacterDtoDb>
     ): MediatorResult {
 
         return try {
@@ -119,7 +121,7 @@ class CharacterRemoteMediator(
     }
 
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Character>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, CharacterDtoDb>): RemoteKeys? {
         // Get the last page that was retrieved, that contained items.
         // From that last page, get the last item
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
@@ -129,7 +131,7 @@ class CharacterRemoteMediator(
             }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Character>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, CharacterDtoDb>): RemoteKeys? {
         // Get the first page that was retrieved, that contained items.
         // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
@@ -140,7 +142,7 @@ class CharacterRemoteMediator(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, Character>
+        state: PagingState<Int, CharacterDtoDb>
     ): RemoteKeys? {
         // The paging library is trying to load data after the anchor position
         // Get the item closest to the anchor position

@@ -1,17 +1,17 @@
-package com.example.rickandmortyguide.data
+package com.example.rickandmortyguide.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.rickandmortyguide.domain.Character
+import com.example.rickandmortyguide.data.CharacterDtoDb
 
-@Database(entities = [Character::class, RemoteKeys::class, SearchRemoteKeys::class], version = 5, exportSchema = false)
+
+@Database(entities = [CharacterDtoDb::class, RemoteKeys::class], version = 7, exportSchema = false)
 abstract class CharactersDatabase : RoomDatabase() {
 
     abstract fun charactersDao(): CharactersDao
     abstract fun remoteKeysDao(): RemoteKeysDao
-    abstract fun searchRemoteKeysDao(): SearchRemoteKeysDao
 
     companion object {
 

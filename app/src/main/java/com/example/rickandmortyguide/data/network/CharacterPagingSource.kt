@@ -1,9 +1,9 @@
-package com.example.rickandmortyguide.data
+package com.example.rickandmortyguide.data.network
 
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.rickandmortyguide.domain.Character
+import com.example.rickandmortyguide.data.CharacterDtoDb
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -13,21 +13,21 @@ private const val STARTING_PAGE_INDEX = 0
 class CharacterPagingSource(
     private val networkService: ApiPagingService,
     private val query: String
-): PagingSource<Int, Character>() {
-    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
+): PagingSource<Int, CharacterDtoDb>() {
+    override fun getRefreshKey(state: PagingState<Int, CharacterDtoDb>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDtoDb> {
 
 
         return try {
             val pageIndex = params.key ?: STARTING_PAGE_INDEX
             val apiResponse = networkService.getSearchedCharactersExample(pageIndex,query)
-            var result: List<Character>
+            var result: List<CharacterDtoDb>
 
             apiResponse.characters.let {
                 result = it
