@@ -16,6 +16,4 @@ class CharacterMapper {
             dbModel.image
         )
     }
-
-
 }

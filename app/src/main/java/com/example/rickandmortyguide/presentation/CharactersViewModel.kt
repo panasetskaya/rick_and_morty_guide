@@ -6,17 +6,19 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.rickandmortyguide.data.CharactersRepositoryImpl
 import com.example.rickandmortyguide.domain.Character
 import com.example.rickandmortyguide.domain.GetSearchedListUseCase
 import com.example.rickandmortyguide.domain.GetWholeListUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class CharactersViewModel @Inject constructor(application: Application, repo: CharactersRepositoryImpl) : AndroidViewModel(application) {
+class CharactersViewModel @Inject constructor(
+    application: Application,
+    private val getWholeListUseCase: GetWholeListUseCase,
+    private val getSearchedListUseCase: GetSearchedListUseCase
+) :
+    AndroidViewModel(application) {
 
-    private val getWholeListUseCase = GetWholeListUseCase(repo)
-    private val getSearchedListUseCase = GetSearchedListUseCase(repo)
 
     fun getWholeList(): Flow<PagingData<Character>> {
         Log.i("MyRes", "CharactersViewModel.getWholeList()")

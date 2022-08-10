@@ -6,8 +6,7 @@ import com.example.rickandmortyguide.presentation.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 
-// Definition of a Dagger component
-@Component
+@Component(modules = [CharacterModule::class])
 interface AppComponent {
 
     @Component.Factory
