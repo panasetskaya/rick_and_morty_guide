@@ -65,7 +65,7 @@ class DetailsFragment : Fragment() {
         characterParam.let {
             tvName.text = it.name
             tvSpecies.text = it.species
-            tvCreated.text = it.created?.substring(0, 10)
+            tvCreated.text = it.created
             tvGender.text = it.gender
             tvStatus.text = it.status
             Glide.with(view.context).load(it.image)

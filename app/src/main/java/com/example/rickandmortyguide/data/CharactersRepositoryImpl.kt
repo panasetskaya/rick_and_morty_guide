@@ -13,11 +13,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class CharactersRepositoryImpl @Inject constructor(val context: Context) : CharactersRepository {
+class CharactersRepositoryImpl @Inject constructor(
+    val context: Context,
+    val mapper: CharacterMapper
+) : CharactersRepository {
 
     val apiService = ApiPagingService.getService()
     val db = CharactersDatabase.getInstance(context)
-    val mapper = CharacterMapper()
+
 
     override fun getWholeList(): Flow<PagingData<Character>> {
         Log.i("MyRes", "CharactersRepositoryImpl.getWholeList()")

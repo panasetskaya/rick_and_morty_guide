@@ -1,8 +1,9 @@
 package com.example.rickandmortyguide.data
 
 import com.example.rickandmortyguide.domain.Character
+import javax.inject.Inject
 
-class CharacterMapper {
+class CharacterMapper @Inject constructor() {
 
     fun mapDbModeltoDomainEntity(dbModel: CharacterDtoDb): Character {
         val created = dbModel.created?.substring(0, 10)

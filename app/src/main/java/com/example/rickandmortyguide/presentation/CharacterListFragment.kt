@@ -23,7 +23,6 @@ class CharacterListFragment : Fragment() {
     private lateinit var recyclerViewCharacters: RecyclerView
     private lateinit var searchView: SearchView
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
