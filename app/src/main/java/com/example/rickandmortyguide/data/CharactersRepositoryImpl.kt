@@ -1,7 +1,5 @@
 package com.example.rickandmortyguide.data
 
-import android.content.Context
-import android.util.Log
 import androidx.paging.*
 import com.example.rickandmortyguide.data.db.CharactersDatabase
 import com.example.rickandmortyguide.data.network.ApiPagingService
@@ -14,15 +12,13 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CharactersRepositoryImpl @Inject constructor(
-    val context: Context,
     val mapper: CharacterMapper,
-    val db: CharactersDatabase
+    val db: CharactersDatabase,
+    val apiService: ApiPagingService,
+    val characterRemoteMediator: CharacterRemoteMediator
 ) : CharactersRepository {
 
-    val apiService = ApiPagingService.getService()
-
     override fun getWholeList(): Flow<PagingData<Character>> {
-        Log.i("MyRes", "CharactersRepositoryImpl.getWholeList()")
         return loadAllCharacters().flow
             .map {
                 it.map { characterDtoDb ->
@@ -42,26 +38,21 @@ class CharactersRepositoryImpl @Inject constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     private fun loadAllCharacters(): Pager<Int, CharacterDtoDb> {
-        Log.i("MyRes", "loadAllCharacters()")
         val pager = Pager(
             config = PagingConfig(
                 enablePlaceholders = true,
                 pageSize = 20
             ),
-            remoteMediator = CharacterRemoteMediator(db, apiService)
+            remoteMediator = characterRemoteMediator
         ) {
-            Log.i("MyRes", "db.charactersDao().getWholeList()")
             db.charactersDao().getWholeList()
         }
-        Log.i("MyRes", "pager")
         return pager
     }
 
     private fun loadSearchedCharacters(query: String): Pager<Int, CharacterDtoDb> {
-        Log.i("MyRes", "loadAllCharacters()")
+
         val pager = Pager(
-            // Configure how data is loaded by passing additional properties to
-            // PagingConfig, such as prefetchDistance.
             PagingConfig(
                 enablePlaceholders = true,
                 pageSize = 20
@@ -69,7 +60,6 @@ class CharactersRepositoryImpl @Inject constructor(
         ) {
             CharacterPagingSource(apiService, query)
         }
-        Log.i("MyRes", "search pager")
         return pager
     }
 }

@@ -3,7 +3,6 @@ package com.example.rickandmortyguide.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rickandmortyguide.DI.AppComponent
-import com.example.rickandmortyguide.DI.DaggerAppComponent
 import com.example.rickandmortyguide.R
 import com.example.rickandmortyguide.RickMortyApplication
 import javax.inject.Inject
