@@ -11,11 +11,12 @@ import com.example.rickandmortyguide.data.db.CharactersDatabase
 import com.example.rickandmortyguide.data.db.RemoteKeys
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 private const val STARTING_PAGE_INDEX = 0
 
 @OptIn(ExperimentalPagingApi::class)
-class CharacterRemoteMediator(
+class CharacterRemoteMediator @Inject constructor(
     private val database: CharactersDatabase,
     private val networkService: ApiPagingService
 ) : RemoteMediator<Int, CharacterDtoDb>() {

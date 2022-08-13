@@ -10,19 +10,27 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rickandmortyguide.DI.AppComponent
 import com.example.rickandmortyguide.R
+import com.example.rickandmortyguide.application.RickMortyApplication
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class CharacterListFragment : Fragment() {
 
-    private lateinit var viewModel: CharactersViewModel
+    val appComponent: AppComponent by lazy {
+        (requireActivity().application as RickMortyApplication).appComponent
+    }
+
+    @Inject
+    lateinit var viewModel: CharactersViewModel
+
     private lateinit var pagingAdapter: CharacterPagingAdapter
     private lateinit var recyclerViewCharacters: RecyclerView
     private lateinit var searchView: SearchView
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +41,7 @@ class CharacterListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModel
+        appComponent.inject(this)
         setViews(view)
         setAdapter()
         searching(searchView)

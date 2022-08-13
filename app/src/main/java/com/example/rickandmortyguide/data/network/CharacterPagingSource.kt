@@ -10,10 +10,11 @@ import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 0
 
-class CharacterPagingSource(
+class CharacterPagingSource (
     private val networkService: ApiPagingService,
     private val query: String
 ): PagingSource<Int, CharacterDtoDb>() {
+
     override fun getRefreshKey(state: PagingState<Int, CharacterDtoDb>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
