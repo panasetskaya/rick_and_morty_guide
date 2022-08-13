@@ -2,14 +2,13 @@ package com.example.rickandmortyguide.DI
 
 import android.app.Application
 import android.content.Context
-import com.example.rickandmortyguide.data.db.CharactersDatabase
 import com.example.rickandmortyguide.presentation.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [CharacterModule::class])
+@Component(modules = [CharacterModule::class, RoomModule::class])
 interface AppComponent {
 
     @Component.Factory

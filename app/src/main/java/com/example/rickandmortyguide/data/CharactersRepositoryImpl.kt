@@ -15,12 +15,11 @@ import javax.inject.Inject
 
 class CharactersRepositoryImpl @Inject constructor(
     val context: Context,
-    val mapper: CharacterMapper
+    val mapper: CharacterMapper,
+    val db: CharactersDatabase
 ) : CharactersRepository {
 
     val apiService = ApiPagingService.getService()
-    val db = CharactersDatabase.getInstance(context)
-
 
     override fun getWholeList(): Flow<PagingData<Character>> {
         Log.i("MyRes", "CharactersRepositoryImpl.getWholeList()")
