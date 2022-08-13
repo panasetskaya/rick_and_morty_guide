@@ -15,6 +15,7 @@ import com.google.android.material.appbar.MaterialToolbar
 
 
 class DetailsFragment : Fragment() {
+
     private lateinit var characterParam: Character
     private lateinit var tvName: TextView
     private lateinit var tvGender: TextView
@@ -25,9 +26,6 @@ class DetailsFragment : Fragment() {
     private lateinit var topAppBarDetail: MaterialToolbar
     val args: DetailsFragmentArgs by navArgs()
 
-
-    private lateinit var viewModel: CharactersViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +35,6 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModel
         characterParam = args.idParam
         findViews(view)
         setValues(view)

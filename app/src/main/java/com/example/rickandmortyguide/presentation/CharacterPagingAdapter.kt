@@ -31,16 +31,6 @@ class CharacterPagingAdapter :
         val thisItemView = itemView
     }
 
-    companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<Character>() {
-            override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean =
-                oldItem == newItem
-        }
-    }
-
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         getItem(position)?.let { char ->
             holder.textViewCharacterName.text = char.name
@@ -53,5 +43,15 @@ class CharacterPagingAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         return CharacterViewHolder.getInstance(parent)
+    }
+
+    companion object {
+        private val COMPARATOR = object : DiffUtil.ItemCallback<Character>() {
+            override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean =
+                oldItem == newItem
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.rickandmortyguide
+package com.example.rickandmortyguide.application
 
 import android.app.Application
 import com.example.rickandmortyguide.DI.DaggerAppComponent
