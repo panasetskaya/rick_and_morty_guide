@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyguide.DI.AppComponent
-import com.example.rickandmortyguide.R
 import com.example.rickandmortyguide.application.RickMortyApplication
+import com.example.rickandmortyguide.databinding.FragmentCharacterListBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -25,40 +24,34 @@ class CharacterListFragment : Fragment() {
         (requireActivity().application as RickMortyApplication).appComponent
     }
 
+    private var _binding: FragmentCharacterListBinding? = null
+    private val binding: FragmentCharacterListBinding
+        get() = _binding ?: throw RuntimeException("FragmentCharacterListBinding == null")
+
     @Inject
     lateinit var viewModel: CharactersViewModel
 
     private lateinit var pagingAdapter: CharacterPagingAdapter
-    private lateinit var recyclerViewCharacters: RecyclerView
-    private lateinit var searchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_character_list, container, false)
+    ): View {
+        _binding = FragmentCharacterListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         appComponent.inject(this)
-        setViews(view)
         setAdapter()
-        searching(searchView)
+        searching(binding.searchViewMain)
         launchWholeList()
-        if (searchView.isNotEmpty()) {
-            launchSearch(searchView.query.toString())
-        }
-    }
-
-    private fun setViews(view: View) {
-        recyclerViewCharacters = view.findViewById(R.id.recyclerCharacters)
-        searchView = view.findViewById(R.id.searchViewMain)
     }
 
     private fun setAdapter() {
         pagingAdapter = CharacterPagingAdapter()
-        recyclerViewCharacters.adapter = pagingAdapter.withLoadStateAdapters(
+        binding.recyclerCharacters.adapter = pagingAdapter.withLoadStateAdapters(
             header = CharactersLoadStateAdapter(pagingAdapter),
             footer = CharactersLoadStateAdapter(pagingAdapter)
         )
@@ -69,14 +62,14 @@ class CharacterListFragment : Fragment() {
                 CharacterListFragmentDirections.actionCharacterListFragmentToDetailsFragment(
                     character
                 )
-            recyclerViewCharacters.findNavController().navigate(action)
+            binding.recyclerCharacters.findNavController().navigate(action)
         }
     }
 
     private fun searching(search: SearchView) {
         search.setOnQueryTextFocusChangeListener {view, b ->
             if (b) {
-                launchSearch(searchView.query.toString())
+                launchSearch(search.query.toString())
             } else {
                 launchWholeList()
             }
@@ -116,5 +109,10 @@ class CharacterListFragment : Fragment() {
 
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

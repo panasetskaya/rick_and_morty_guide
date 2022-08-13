@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">Rick and Morty Guide</string>
     <string name="character_image_description">Character\'s image</string>
-    <string name="loading_failed">Either your Internet is down
-        \n there is no such character
-        \n or this is the end of the list! :)</string>
+    <string name="loading_failed">Either your Internet is down,
+        \n there is no such character,
+        \n or this is the end of the list! =)</string>
     <string name="one_more_time">One more time</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="status_label">Status:</string>
     <string name="gender_label">Gender:</string>
