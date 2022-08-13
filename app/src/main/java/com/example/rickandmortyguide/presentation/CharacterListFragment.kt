@@ -71,11 +71,10 @@ class CharacterListFragment : Fragment() {
                 )
             recyclerViewCharacters.findNavController().navigate(action)
         }
-        pagingAdapter.refresh()
     }
 
     private fun searching(search: SearchView) {
-        search.setOnQueryTextFocusChangeListener { view, b ->
+        search.setOnQueryTextFocusChangeListener {view, b ->
             if (b) {
                 launchSearch(searchView.query.toString())
             } else {
@@ -117,6 +116,5 @@ class CharacterListFragment : Fragment() {
 
             }
         }
-        pagingAdapter.refresh()
     }
 }
