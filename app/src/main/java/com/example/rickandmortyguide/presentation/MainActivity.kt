@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.rickandmortyguide.DI.AppComponent
 import com.example.rickandmortyguide.DI.DaggerAppComponent
 import com.example.rickandmortyguide.R
+import com.example.rickandmortyguide.RickMortyApplication
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     val appComponent: AppComponent by lazy {
-        DaggerAppComponent.factory().create(applicationContext, application)
+        (application as RickMortyApplication).appComponent
     }
 
     @Inject
