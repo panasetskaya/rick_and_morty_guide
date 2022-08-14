@@ -7,6 +7,8 @@ import dagger.Module
 
 @Module
 abstract class CharacterModule {
+
+    @ApplicationScope
     @Binds
     abstract fun provideRepo(impl: CharactersRepositoryImpl): CharactersRepository
 }

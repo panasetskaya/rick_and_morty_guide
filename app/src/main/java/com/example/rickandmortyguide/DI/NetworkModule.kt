@@ -16,10 +16,10 @@ class NetworkModule {
     @ApplicationScope
     @Provides
     fun provideApiService(): ApiPagingService {
+
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
-
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
