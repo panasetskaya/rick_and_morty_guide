@@ -5,6 +5,7 @@ import retrofit2.http.Query
 
 interface ApiPagingService {
 
+
     @GET("character")
     suspend fun getPagingCharactersExample(
         @Query("page") page: Int
