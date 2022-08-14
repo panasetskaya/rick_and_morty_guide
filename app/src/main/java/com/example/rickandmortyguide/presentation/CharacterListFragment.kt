@@ -86,6 +86,10 @@ class CharacterListFragment : Fragment() {
                 return false
             }
         })
+        search.setOnCloseListener {
+            launchWholeList()
+            false
+        }
     }
 
     private fun launchWholeList() {
