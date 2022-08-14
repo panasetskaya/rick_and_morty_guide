@@ -72,31 +72,20 @@ class CharacterListFragment : Fragment() {
     }
 
     private fun searching(search: SearchView) {
-        search.setOnQueryTextFocusChangeListener {view, b ->
-            if (b) {
-                launchSearch(search.query.toString())
-            } else {
-                launchWholeList()
-            }
-        }
 
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newQuery: String?): Boolean {
                 if (newQuery != null) {
                     launchSearch(newQuery)
                 }
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 launchSearch(newText)
-                return true
+                return false
             }
         })
-        search.setOnCloseListener {
-            launchWholeList()
-            false
-        }
     }
 
     private fun launchWholeList() {
