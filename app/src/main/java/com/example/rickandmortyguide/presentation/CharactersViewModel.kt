@@ -5,15 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.rickandmortyguide.DI.ApplicationScope
 import com.example.rickandmortyguide.domain.Character
 import com.example.rickandmortyguide.domain.GetSearchedListUseCase
 import com.example.rickandmortyguide.domain.GetWholeListUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@ApplicationScope
 class CharactersViewModel @Inject constructor(
     application: Application,
     private val getWholeListUseCase: GetWholeListUseCase,

@@ -5,10 +5,9 @@ import android.content.Context
 import com.example.rickandmortyguide.presentation.CharacterListFragment
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Singleton
 
 @ApplicationScope
-@Component(modules = [CharacterModule::class, RoomModule::class, NetworkModule::class])
+@Component(modules = [CharacterModule::class, RoomModule::class, NetworkModule::class, ViewModelModule::class])
 interface AppComponent {
 
     @Component.Factory

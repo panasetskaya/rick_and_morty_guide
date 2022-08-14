@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +30,11 @@ class CharacterListFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentCharacterListBinding == null")
 
     @Inject
-    lateinit var viewModel: CharactersViewModel
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this,viewModelFactory)[CharactersViewModel::class.java]
+    }
 
     private lateinit var pagingAdapter: CharacterPagingAdapter
 
