@@ -36,10 +36,6 @@ class CharactersLoadStateAdapter(private val adapter: PagingDataAdapter<*, *>) :
                 progressBarLoading.isVisible = loadState is LoadState.Loading
                 textViewError.isVisible =
                     !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
-                textViewError.text =
-                        textViewError.context.resources.getString(R.string.loading_failed)
-
-
             }
         }
     }

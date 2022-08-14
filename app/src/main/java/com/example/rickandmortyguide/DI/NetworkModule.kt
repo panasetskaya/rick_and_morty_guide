@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideApiService(): ApiPagingService {
         val moshi = Moshi.Builder()

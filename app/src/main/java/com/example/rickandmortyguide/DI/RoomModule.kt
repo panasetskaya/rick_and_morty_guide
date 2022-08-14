@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Module
 class RoomModule {
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideDatabase(context: Context): CharactersDatabase {
         return Room.databaseBuilder(context, CharactersDatabase::class.java, DB_NAME)

@@ -21,7 +21,18 @@
         android:textAlignment="center"
         android:visibility="gone"
         android:layout_marginTop="12dp"
-        tools:text="@string/loading_failed"
+        android:text="@string/loading_failed"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/text_view_noNetwork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="@string/no_network"
+        android:layout_marginTop="12dp"
         tools:visibility="visible" />
 
     <Button
